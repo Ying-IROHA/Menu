@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>鸡尾酒酒单</title>
+  <style>
+    :root {
+      --bg: #0d0b09;
+      --panel: rgba(255,255,255,0.075);
+      --panel-2: rgba(255,255,255,0.11);
+      --text: #f8efe2;
+      --muted: #b7aa99;
+      --gold: #d7a84f;
+      --line: rgba(215,168,79,0.25);
+      --shadow: 0 20px 60px rgba(0,0,0,.35);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(215,168,79,.18), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(122,25,25,.28), transparent 38%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 56px 20px 28px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      color: var(--gold);
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(36px, 8vw, 74px);
+      line-height: 1;
+      font-weight: 800;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      margin-top: 16px;
+      font-size: 15px;
+    }
+
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(18px);
+      background: rgba(13,11,9,.82);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 14px 16px;
+    }
+
+    .toolbar-inner {
+      max-width: 1100px;
+      margin: auto;
+      display: grid;
+      gap: 12px;
+    }
+
+    .search {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 14px 18px;
+      font-size: 15px;
+      outline: none;
+    }
+
+    .search::placeholder { color: #8f8272; }
+
+    .filters {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+
+    .filter {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 9px 14px;
+      white-space: nowrap;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .filter.active {
+      background: var(--gold);
+      color: #17110a;
+      border-color: var(--gold);
+      font-weight: 700;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: auto;
+      padding: 28px 16px 64px;
+    }
+
+    .count {
+      color: var(--muted);
+      margin: 0 0 18px;
+      font-size: 14px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, var(--panel-2), var(--panel));
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+      min-height: 210px;
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .name {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.15;
+    }
+
+    .zh {
+      color: var(--muted);
+      margin-top: 6px;
+      font-size: 14px;
+    }
+
+    .tag {
+      color: #1b1206;
+      background: var(--gold);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 8px;
+    }
+
+    li {
+      color: #e7d8c2;
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding-top: 8px;
+      font-size: 14px;
+    }
+
+    .empty {
+      display: none;
+      text-align: center;
+      color: var(--muted);
+      padding: 48px 12px;
+      border: 1px dashed var(--line);
+      border-radius: 20px;
+    }
+
+    footer {
+      text-align: center;
+      color: #796d60;
+      padding: 20px;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="eyebrow">Cocktail Menu</div>
+    <h1>鸡尾酒酒单</h1>
+    <div class="subtitle">以下配方仅供参考，可根据客人口味做个性化调整</div>
+  </header>
+
+  <section class="toolbar">
+    <div class="toolbar-inner">
+      <input id="search" class="search" placeholder="搜索酒名、中文名、基酒或材料，例如 Negroni / 金酒 / Campari" />
+      <div id="filters" class="filters"></div>
+    </div>
+  </section>
+
+  <main>
+    <p id="count" class="count"></p>
+    <section id="grid" class="grid"></section>
+    <section id="empty" class="empty">没有找到对应鸡尾酒。</section>
+  </main>
+
+  <footer>Menu page generated from your cocktail list.</footer>
+
+  <script>
+    const cocktails = [
+  {
+    "name": "Americano",
+    "zh": "美国佬",
+    "base": "Campari",
+    "ingredients": [
+      "30ml Campari",
+      "30ml Red Vermouth",
+      "Soda Water"
+    ]
+  },
+  {
+    "name": "Aviation",
+    "zh": "飞行",
+    "base": "Gin",
+    "ingredients": [
+      "45ml Gin",
+      "15ml Luxardo",
+      "15ml Lemon juice",
+      "1 Bar spoon Violette Crème"
+    ]
+  },
+  {
+    "name": "Bee’s Knees",
+    "zh": "蜂膝",
+    "base": "Gin",
+    "ingredients": [
+      "45ml Gin",
+      "10ml Lime juice",
+      "Enough Honey"
+    ]
+  },
+  {
+    "name": "Black Russian",
+    "zh": "黑俄罗斯",
+    "base": "Vodka",
+    "ingredients": [
+      "50ml Vodka",
+      "20ml Coffee Liqueur"
+    ]
+  },
+  {
+    "name": "Bloody Mary",
+    "zh": "血腥玛丽",
+    "base": "Vodka",
+    "ingredients": [
+      "45ml Vodka",
+      "90ml Tomato juice",
+      "15ml Lemon juice",
+      "Tabasco",
+      "Celery Salt",
+      "Pepper"
+    ]
+  },
+  {
+    "name": "Boulevardier",
+    "zh": "花花公子",
+    "base": "Whiskey",
+    "ingredients": [
+      "45ml Rye Whiskey",
+      "30ml Campari",
+      "30ml Red Vermouth"
+    ]
+  },
+  {
+    "name": "Cardinale",
+    "zh": "卡迪纳尔",
+    "base": "Gin",
+    "ingredients": [
+      "40ml Gin",
+      "20ml Dry Vermouth",
+      "10ml Campari"
+    ]
+  },
+  {
+    "name": "Clover Club",
+    "zh": "三叶草俱乐部",
+    "base": "Gin",
+    "ingredients": [
+      "45ml Gin",
+      "15ml Raspberry Syrup",
+      "15ml Lemon juice",
+      "Egg White"
+    ]
+  },
+  {
+    "name": "Cosmopolitan",
+    "zh": "大都会",
+    "base": "Vodka",
+    "ingredients": [
+      "40ml Vodka Citron",
+      "15ml Cointreau",
+      "15ml Lime juice",
+      "30ml Cranberry juice"
+    ]
+  },
+  {
+    "name": "Cuba Libre",
+    "zh": "自由古巴",
+    "base": "Rum",
+    "ingredients": [
+      "50ml White Rum",
+      "120ml Cola",
+      "10ml Lime juice"
+    ]
+  },
+  {
+    "name": "Daiquiri",
+    "zh": "大吉利",
+    "base": "Rum",
+    "ingredients": [
+      "60ml White Rum",
+      "20ml Lime juice",
+      "2 Bar Spoons Sugar"
+    ]
+  },
+  {
+    "name": "Dry Martini",
+    "zh": "干马天尼",
+    "base": "Gin",
+    "ingredients": [
+      "Gin",
+      "Vermouth"
+    ]
+  },
+  {
+    "name": "Espresso Martini",
+    "zh": "意式浓缩马天尼",
+    "base": "Vodka",
+    "ingredients": [
+      "50ml Vodka",
+      "30ml Kahlúa",
+      "10ml Syrup",
+      "1 Espresso"
+    ]
+  },
+  {
+    "name": "French 75",
+    "zh": "法式 75",
+    "base": "Gin",
+    "ingredients": [
+      "30ml Gin",
+      "15ml Syrup",
+      "15ml Lemon juice",
+      "60ml Champagne"
+    ]
+  },
+  {
+    "name": "French Martini",
+    "zh": "法式马天尼",
+    "base": "Vodka",
+    "ingredients": [
+      "45ml Vodka",
+      "15ml Raspberry Liqueur",
+      "15ml Pineapple juice"
+    ]
+  },
+  {
+    "name": "Garibaldi",
+    "zh": "加里波第",
+    "base": "Campari",
+    "ingredients": [
+      "45ml Campari",
+      "120ml Orange juice"
+    ]
+  },
+  {
+    "name": "Gin Fizz",
+    "zh": "金菲士",
+    "base": "Gin",
+    "ingredients": [
+      "45ml Gin",
+      "30ml Lemon juice",
+      "10ml Syrup",
+      "Soda Water"
+    ]
+  },
+  {
+    "name": "Grand Margarita",
+    "zh": "特级玛格丽特",
+    "base": "Tequila",
+    "ingredients": [
+      "45ml Tequila",
+      "30ml Cointreau",
+      "15ml Lime juice"
+    ]
+  },
+  {
+    "name": "Hemingway special",
+    "zh": "海明威",
+    "base": "Rum",
+    "ingredients": [
+      "60ml Rum",
+      "40ml Grapefruit juice",
+      "15ml Luxardo",
+      "15ml Lime juice"
+    ]
+  },
+  {
+    "name": "John Collins",
+    "zh": "约翰·柯林斯",
+    "base": "Gin",
+    "ingredients": [
+      "45ml Gin",
+      "30ml Lemon juice",
+      "15ml Syrup",
+      "Soda Water"
+    ]
+  },
+  {
+    "name": "Last Word",
+    "zh": "遗言",
+    "base": "Gin",
+    "ingredients": [
+      "22.5ml Gin",
+      "22.5ml Green Chartreuses",
+      "22.5ml Luxardo",
+      "22.5ml Lime juice"
+    ]
+  },
+  {
+    "name": "Long Island Iced Tea",
+    "zh": "长岛冰茶",
+    "base": "Mixed",
+    "ingredients": [
+      "15ml Vodka",
+      "15ml Tequila",
+      "15ml White Rum",
+      "15ml Gin",
+      "15ml Cointreau",
+      "25ml Lemon juice",
+      "30ml Syrup",
+      "Cola"
+    ]
+  },
+  {
+    "name": "Manhattan",
+    "zh": "曼哈顿",
+    "base": "Whiskey",
+    "ingredients": [
+      "50ml Rye Whiskey",
+      "20ml Red Vermouth",
+      "1 dash Angostura Bitters"
+    ]
+  },
+  {
+    "name": "Margarita",
+    "zh": "玛格丽特",
+    "base": "Tequila",
+    "ingredients": [
+      "50ml Tequila",
+      "20ml Cointreau",
+      "15ml Lime juice"
+    ]
+  },
+  {
+    "name": "Martinez",
+    "zh": "马丁内斯",
+    "base": "Gin",
+    "ingredients": [
+      "45ml Gin",
+      "45ml Red Vermouth",
+      "1 Bar spoon Luxardo",
+      "2 Dashes Orange Bitters"
+    ]
+  },
+  {
+    "name": "Negroni",
+    "zh": "尼格罗尼",
+    "base": "Gin",
+    "ingredients": [
+      "30ml Gin",
+      "30ml Campari",
+      "30ml Red Vermouth"
+    ]
+  },
+  {
+    "name": "New York Sour",
+    "zh": "纽约酸",
+    "base": "Whiskey",
+    "ingredients": [
+      "60ml Rye Whiskey",
+      "22.5ml Syrup",
+      "30ml Lemon juice",
+      "Egg White",
+      "15ml Red wine"
+    ]
+  },
+  {
+    "name": "Old Fashioned",
+    "zh": "古典",
+    "base": "Whiskey",
+    "ingredients": [
+      "45ml Rye Whiskey",
+      "1 Sugar Cube",
+      "1 Dash Bitter",
+      "Water"
+    ]
+  },
+  {
+    "name": "Pisco Sour",
+    "zh": "皮斯科酸",
+    "base": "Pisco",
+    "ingredients": [
+      "60ml Pisco",
+      "30ml Lemon juice",
+      "20ml Syrup",
+      "Egg White"
+    ]
+  },
+  {
+    "name": "Ramos Gin Fizz",
+    "zh": "拉莫斯金菲士",
+    "base": "Gin",
+    "ingredients": [
+      "别点我求你"
+    ]
+  },
+  {
+    "name": "Sea Breeze",
+    "zh": "海风",
+    "base": "Vodka",
+    "ingredients": [
+      "40ml Vodka",
+      "120ml Cranberry juice",
+      "30ml Grapefruit juice"
+    ]
+  },
+  {
+    "name": "Sex on the beach",
+    "zh": "",
+    "base": "Vodka",
+    "ingredients": [
+      "40ml Vodka",
+      "20ml Peach Schnapps",
+      "40ml Orange juice",
+      "40ml Cranberry juice"
+    ]
+  },
+  {
+    "name": "Sidecar",
+    "zh": "边车",
+    "base": "Cognac",
+    "ingredients": [
+      "50ml Cognac",
+      "20ml Cointreau",
+      "20ml Lemon juice"
+    ]
+  },
+  {
+    "name": "Tequila Sunrise",
+    "zh": "龙舌兰日出",
+    "base": "Tequila",
+    "ingredients": [
+      "45ml Tequila",
+      "90ml Orange juice",
+      "15ml Grenadine Syrup"
+    ]
+  },
+  {
+    "name": "Trinidad Sour",
+    "zh": "特立尼达酸",
+    "base": "Bitters",
+    "ingredients": [
+      "45ml Angostura Bitters",
+      "30ml Orgeat Syrup",
+      "22.5ml Lemon juice",
+      "15ml Rye Whiskey"
+    ]
+  },
+  {
+    "name": "Whiskey Sour",
+    "zh": "威士忌酸",
+    "base": "Whiskey",
+    "ingredients": [
+      "45ml Bourbon Whiskey",
+      "25ml Lemon juice",
+      "20ml Syrup",
+      "Egg White"
+    ]
+  },
+  {
+    "name": "White Lady",
+    "zh": "",
+    "base": "Gin",
+    "ingredients": [
+      "40ml Gin",
+      "30ml Cointreau",
+      "20ml Lemon juice"
+    ]
+  }
+];
+
+    const baseLabels = {
+      All: "全部",
+      Gin: "金酒",
+      Vodka: "伏特加",
+      Whiskey: "威士忌",
+      Rum: "朗姆",
+      Tequila: "龙舌兰",
+      Campari: "Campari",
+      Cognac: "干邑",
+      Pisco: "皮斯科",
+      Bitters: "苦精",
+      Mixed: "混合基酒"
+    };
+
+    let currentBase = "All";
+
+    const grid = document.getElementById("grid");
+    const search = document.getElementById("search");
+    const filters = document.getElementById("filters");
+    const count = document.getElementById("count");
+    const empty = document.getElementById("empty");
+
+    function uniqueBases() {
+      const preferred = ["All", "Gin", "Vodka", "Whiskey", "Rum", "Tequila", "Campari", "Cognac", "Pisco", "Bitters", "Mixed"];
+      const actual = new Set(cocktails.map(c => c.base));
+      return preferred.filter(b => b === "All" || actual.has(b));
+    }
+
+    function renderFilters() {
+      filters.innerHTML = uniqueBases().map(base => `
+        <button class="filter ${base === currentBase ? "active" : ""}" data-base="${base}">
+          ${baseLabels[base] || base}
+        </button>
+      `).join("");
+
+      document.querySelectorAll(".filter").forEach(btn => {
+        btn.addEventListener("click", () => {
+          currentBase = btn.dataset.base;
+          renderFilters();
+          renderMenu();
+        });
+      });
+    }
+
+    function matchCocktail(cocktail, keyword) {
+      const haystack = [
+        cocktail.name,
+        cocktail.zh,
+        cocktail.base,
+        ...(cocktail.ingredients || [])
+      ].join(" ").toLowerCase();
+
+      return haystack.includes(keyword.toLowerCase());
+    }
+
+    function renderMenu() {
+      const keyword = search.value.trim();
+
+      const filtered = cocktails.filter(c => {
+        const baseOk = currentBase === "All" || c.base === currentBase;
+        const searchOk = !keyword || matchCocktail(c, keyword);
+        return baseOk && searchOk;
+      });
+
+      count.textContent = `当前显示 ${filtered.length} / ${cocktails.length} 款鸡尾酒`;
+
+      grid.innerHTML = filtered.map(c => `
+        <article class="card">
+          <div class="card-top">
+            <div>
+              <h2 class="name">${c.name}</h2>
+              ${c.zh ? `<div class="zh">${c.zh}</div>` : ""}
+            </div>
+            <span class="tag">${baseLabels[c.base] || c.base}</span>
+          </div>
+          <ul>
+            ${c.ingredients.map(i => `<li>${i}</li>`).join("")}
+          </ul>
+        </article>
+      `).join("");
+
+      empty.style.display = filtered.length ? "none" : "block";
+    }
+
+    search.addEventListener("input", renderMenu);
+
+    renderFilters();
+    renderMenu();
+  </script>
+</body>
+</html>
