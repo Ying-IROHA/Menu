@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
@@ -185,6 +185,20 @@
       padding: 6px 10px;
       font-size: 12px;
       font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .card-meta {
+      display: grid;
+      justify-items: end;
+      gap: 8px;
+      flex: 0 0 auto;
+    }
+
+    .price {
+      color: var(--text);
+      font-size: 20px;
+      font-weight: 800;
       white-space: nowrap;
     }
 
@@ -659,43 +673,83 @@
     };
 
     const tasteNotes = {
-      "Americano": "轻盈微苦，带草本香气和气泡感，适合作为餐前开胃酒。",
-      "Aviation": "花香明显，酸甜平衡，带一点樱桃和紫罗兰的优雅香气。",
-      "Bee’s Knees": "蜂蜜香甜，柑橘酸度清爽，口感柔和易入口。",
-      "Black Russian": "咖啡香浓，酒感直接，甜度中等，收口偏厚重。",
-      "Bloody Mary": "咸鲜辛香，番茄味浓郁，带柠檬酸度和微辣感。",
-      "Boulevardier": "浓郁微苦，威士忌香气厚实，尾韵带香草和草本味。",
-      "Cardinale": "干爽微苦，草本味突出，比 Negroni 更轻盈利落。",
-      "Clover Club": "莓果酸甜，泡沫细腻，口感柔滑清新。",
-      "Cosmopolitan": "蔓越莓果酸明亮，甜度适中，整体清爽干净。",
-      "Cuba Libre": "可乐甜香和青柠酸度明显，口感轻松畅饮。",
-      "Daiquiri": "酸甜直接，朗姆香气干净，清爽但酒体扎实。",
-      "Dry Martini": "极干净利落，杜松子香明显，酒感强，偏干型。",
-      "Espresso Martini": "咖啡香浓，入口顺滑，带甜感和明显提神苦香。",
-      "French 75": "气泡轻盈，柠檬清爽，带金酒香气和香槟干爽感。",
-      "French Martini": "莓果和菠萝香甜，口感圆润，酸度较轻。",
-      "Garibaldi": "橙汁果香饱满，Campari 微苦，整体清爽开胃。",
-      "Gin Fizz": "柠檬酸爽，气泡感强，口感轻盈清新。",
-      "Grand Margarita": "龙舌兰香气突出，柑橘味浓，酸甜更圆润。",
-      "Hemingway special": "葡萄柚微苦，青柠酸爽，朗姆酒感清晰但不甜腻。",
-      "John Collins": "柠檬酸甜配气泡，口感清爽，酒感温和。",
-      "Last Word": "草本、樱桃和青柠层次明显，酸甜均衡，尾韵复杂。",
-      "Long Island Iced Tea": "可乐和柠檬味为主，入口顺，但酒感和后劲较强。",
-      "Manhattan": "威士忌香浓，甜味美思带来圆润草本感，口感成熟厚实。",
-      "Margarita": "青柠酸爽，橙香明亮，龙舌兰风味清晰，带微咸感更好喝。",
-      "Martinez": "甜润草本，带樱桃和橙皮香气，口感比 Martini 更圆。",
-      "Negroni": "经典苦甜平衡，草本和橙皮香明显，酒体厚实。",
-      "New York Sour": "威士忌酸甜柔顺，红酒漂浮带来果香和单宁感。",
-      "Old Fashioned": "威士忌本味突出，微甜，带苦精香气和温暖尾韵。",
-      "Pisco Sour": "柑橘酸爽，蛋白泡沫细腻，酒香清亮，口感柔顺。",
-      "Ramos Gin Fizz": "奶油感细腻，柑橘和花香柔和，像轻盈的甜品气泡酒。",
-      "Sea Breeze": "蔓越莓酸甜配葡萄柚微苦，清爽果汁感明显。",
-      "Sex on the beach": "桃子和橙汁香甜，果味浓，酸度轻，适合轻松饮用。",
-      "Sidecar": "干邑果香和橙香突出，柠檬酸度让口感更利落。",
-      "Tequila Sunrise": "橙汁甜香为主，石榴糖浆带果甜和漂亮层次。",
-      "Trinidad Sour": "苦精香料感很强，杏仁甜香明显，酸甜苦层次浓烈。",
-      "Whiskey Sour": "酸甜平衡，威士忌香气温暖，蛋白让口感更柔滑。",
-      "White Lady": "金酒和橙香清爽，柠檬酸度干净，整体偏酸甜利落。"
+      "Americano": "风味-等待填写中",
+      "Aviation": "风味-等待填写中",
+      "Bee’s Knees": "风味-等待填写中",
+      "Black Russian": "风味-等待填写中",
+      "Bloody Mary": "风味-等待填写中",
+      "Boulevardier": "风味-等待填写中",
+      "Cardinale": "风味-等待填写中",
+      "Clover Club": "风味-等待填写中",
+      "Cosmopolitan": "风味-等待填写中",
+      "Cuba Libre": "风味-等待填写中",
+      "Daiquiri": "风味-等待填写中",
+      "Dry Martini": "风味-等待填写中",
+      "Espresso Martini": "风味-等待填写中",
+      "French 75": "风味-等待填写中",
+      "French Martini": "风味-等待填写中",
+      "Garibaldi": "风味-等待填写中",
+      "Gin Fizz": "风味-等待填写中",
+      "Grand Margarita": "风味-等待填写中",
+      "Hemingway special": "风味-等待填写中",
+      "John Collins": "风味-等待填写中",
+      "Last Word": "风味-等待填写中",
+      "Long Island Iced Tea": "风味-等待填写中",
+      "Manhattan": "风味-等待填写中",
+      "Margarita": "风味-等待填写中",
+      "Martinez": "风味-等待填写中",
+      "Negroni": "风味-等待填写中",
+      "New York Sour": "风味-等待填写中",
+      "Old Fashioned": "风味-等待填写中",
+      "Pisco Sour": "风味-等待填写中",
+      "Ramos Gin Fizz": "风味-等待填写中",
+      "Sea Breeze": "风味-等待填写中",
+      "Sex on the beach": "风味-等待填写中",
+      "Sidecar": "风味-等待填写中",
+      "Tequila Sunrise": "风味-等待填写中",
+      "Trinidad Sour": "风味-等待填写中",
+      "Whiskey Sour": "风味-等待填写中",
+      "White Lady": "风味-等待填写中"
+    };
+
+    const prices = {
+      "Americano": 88,
+      "Aviation": 88,
+      "Bee’s Knees": 88,
+      "Black Russian": 88,
+      "Bloody Mary": 88,
+      "Boulevardier": 88,
+      "Cardinale": 88,
+      "Clover Club": 88,
+      "Cosmopolitan": 88,
+      "Cuba Libre": 88,
+      "Daiquiri": 88,
+      "Dry Martini": 88,
+      "Espresso Martini": 88,
+      "French 75": 88,
+      "French Martini": 88,
+      "Garibaldi": 88,
+      "Gin Fizz": 88,
+      "Grand Margarita": 88,
+      "Hemingway special": 88,
+      "John Collins": 88,
+      "Last Word": 88,
+      "Long Island Iced Tea": 88,
+      "Manhattan": 88,
+      "Margarita": 88,
+      "Martinez": 88,
+      "Negroni": 88,
+      "New York Sour": 88,
+      "Old Fashioned": 88,
+      "Pisco Sour": 88,
+      "Ramos Gin Fizz": 88,
+      "Sea Breeze": 88,
+      "Sex on the beach": 88,
+      "Sidecar": 88,
+      "Tequila Sunrise": 88,
+      "Trinidad Sour": 88,
+      "Whiskey Sour": 88,
+      "White Lady": 88
     };
 
     let currentBase = "All";
@@ -735,6 +789,7 @@
         cocktail.zh,
         cocktail.base,
         tasteNotes[cocktail.name],
+        prices[cocktail.name],
         ...(cocktail.ingredients || [])
       ].join(" ").toLowerCase();
 
@@ -763,7 +818,10 @@
               ${c.zh ? `<div class="zh">${c.zh}</div>` : ""}
               ${tasteNotes[c.name] ? `<div class="taste">${tasteNotes[c.name]}</div>` : ""}
             </div>
-            <span class="tag">${baseLabels[c.base] || c.base}</span>
+            <div class="card-meta">
+              <span class="tag">${baseLabels[c.base] || c.base}</span>
+              ${prices[c.name] ? `<span class="price">&yen;${prices[c.name]}</span>` : ""}
+            </div>
           </div>
           ${isOpen ? `<ul>
             ${c.ingredients.map(i => `<li>${i}</li>`).join("")}
