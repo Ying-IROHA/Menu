@@ -1,10 +1,11 @@
-﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>经典鸡尾酒酒单</title>
   <style>
+    /* 全局主题变量：集中管理背景、文字、金色强调色和阴影。 */
     :root {
       --bg: #0d0b09;
       --panel: rgba(255,255,255,0.075);
@@ -16,6 +17,7 @@
       --shadow: 0 20px 60px rgba(0,0,0,.35);
     }
 
+    /* 统一盒模型，避免宽度计算受到 padding 和 border 影响。 */
     * { box-sizing: border-box; }
 
     body {
@@ -29,6 +31,7 @@
       min-height: 100vh;
     }
 
+    /* 顶部标题区。 */
     header {
       padding: 56px 20px 28px;
       text-align: center;
@@ -55,6 +58,7 @@
       font-size: 15px;
     }
 
+    /* 搜索和分类栏固定在顶部，方便浏览长酒单时随时筛选。 */
     .toolbar {
       position: sticky;
       top: 0;
@@ -111,6 +115,7 @@
       font-weight: 700;
     }
 
+    /* 主体卡片区使用响应式网格，屏幕变窄时自动减少列数。 */
     main {
       max-width: 1100px;
       margin: auto;
@@ -243,12 +248,14 @@
   </style>
 </head>
 <body>
+  <!-- 页面头部：展示酒单标题和简短说明。 -->
   <header>
     <div class="eyebrow">Cocktail Menu</div>
     <h1>鸡尾酒酒单</h1>
     <div class="subtitle">以下配方仅供参考</div>
   </header>
 
+  <!-- 工具栏：搜索输入框和基酒分类按钮由脚本动态渲染。 -->
   <section class="toolbar">
     <div class="toolbar-inner">
       <input id="search" class="search" placeholder="搜索酒名、基酒或材料" />
@@ -256,6 +263,7 @@
     </div>
   </section>
 
+  <!-- 酒单列表：卡片内容、数量和空状态都由脚本根据筛选结果更新。 -->
   <main>
     <p id="count" class="count"></p>
     <section id="grid" class="grid"></section>
@@ -265,6 +273,7 @@
   <footer>0.0</footer>
 
   <script>
+    // 鸡尾酒基础数据：名称、中文名、基酒和配方材料。
     const cocktails = [
   {
     "name": "Americano",
@@ -658,6 +667,7 @@
   }
 ];
 
+    // 基酒英文值到页面中文标签的映射，用于筛选按钮和卡片标签。
     const baseLabels = {
       All: "全部",
       Gin: "金酒",
@@ -672,6 +682,7 @@
       Mixed: "混合基酒"
     };
 
+    // 风味说明表，后续只需要改这里即可补充每款酒的描述。
     const tasteNotes = {
       "Americano": "风味-等待填写中",
       "Aviation": "风味-等待填写中",
@@ -712,6 +723,7 @@
       "White Lady": "风味-等待填写中"
     };
 
+    // 价格表按鸡尾酒英文名匹配，便于统一调整展示价格。
     const prices = {
       "Americano": 88,
       "Aviation": 88,
@@ -755,18 +767,21 @@
     let currentBase = "All";
     let openCocktail = null;
 
+    // 缓存常用 DOM 节点，避免每次渲染重复查找。
     const grid = document.getElementById("grid");
     const search = document.getElementById("search");
     const filters = document.getElementById("filters");
     const count = document.getElementById("count");
     const empty = document.getElementById("empty");
 
+    // 只展示数据里实际存在的基酒分类，同时保留固定排序。
     function uniqueBases() {
       const preferred = ["All", "Gin", "Vodka", "Whiskey", "Rum", "Tequila", "Campari", "Cognac", "Pisco", "Bitters", "Mixed"];
       const actual = new Set(cocktails.map(c => c.base));
       return preferred.filter(b => b === "All" || actual.has(b));
     }
 
+    // 渲染分类按钮，并在点击后更新当前分类和酒单。
     function renderFilters() {
       filters.innerHTML = uniqueBases().map(base => `
         <button class="filter ${base === currentBase ? "active" : ""}" data-base="${base}">
@@ -783,6 +798,7 @@
       });
     }
 
+    // 搜索时把名称、中文名、基酒、风味、价格和材料都纳入匹配范围。
     function matchCocktail(cocktail, keyword) {
       const haystack = [
         cocktail.name,
@@ -796,6 +812,7 @@
       return haystack.includes(keyword.toLowerCase());
     }
 
+    // 根据当前分类、搜索关键字和展开状态重新生成酒单卡片。
     function renderMenu() {
       const keyword = search.value.trim();
 
@@ -833,6 +850,7 @@
       empty.style.display = filtered.length ? "none" : "block";
     }
 
+    // 监听搜索输入、鼠标点击和键盘操作，保持卡片可访问性。
     search.addEventListener("input", renderMenu);
     grid.addEventListener("click", event => {
       const card = event.target.closest(".card");
