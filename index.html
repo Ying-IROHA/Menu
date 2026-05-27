@@ -135,7 +135,20 @@
       border-radius: 22px;
       padding: 20px;
       box-shadow: var(--shadow);
-      min-height: 210px;
+      min-height: 132px;
+      cursor: pointer;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+
+    .card:hover,
+    .card:focus {
+      border-color: rgba(215,168,79,.62);
+      transform: translateY(-2px);
+      outline: none;
+    }
+
+    .card.open {
+      background: linear-gradient(180deg, rgba(255,255,255,.14), var(--panel));
     }
 
     .card-top {
@@ -168,10 +181,18 @@
       white-space: nowrap;
     }
 
+    .card-action {
+      color: var(--gold);
+      border-top: 1px solid rgba(255,255,255,.08);
+      margin-top: 12px;
+      padding-top: 10px;
+      font-size: 13px;
+    }
+
     ul {
       list-style: none;
       padding: 0;
-      margin: 0;
+      margin: 14px 0 0;
       display: grid;
       gap: 8px;
     }
@@ -631,6 +652,7 @@
     };
 
     let currentBase = "All";
+    let openCocktail = null;
 
     const grid = document.getElementById("grid");
     const search = document.getElementById("search");
@@ -682,8 +704,11 @@
 
       count.textContent = `当前显示 ${filtered.length} / ${cocktails.length} 款鸡尾酒`;
 
-      grid.innerHTML = filtered.map(c => `
-        <article class="card">
+      grid.innerHTML = filtered.map(c => {
+        const isOpen = openCocktail === c.name;
+
+        return `
+        <article class="card ${isOpen ? "open" : ""}" data-name="${c.name}" role="button" tabindex="0" aria-expanded="${isOpen}">
           <div class="card-top">
             <div>
               <h2 class="name">${c.name}</h2>
@@ -691,16 +716,31 @@
             </div>
             <span class="tag">${baseLabels[c.base] || c.base}</span>
           </div>
-          <ul>
+          ${isOpen ? `<ul>
             ${c.ingredients.map(i => `<li>${i}</li>`).join("")}
-          </ul>
+          </ul><div class="card-action">收起配方</div>` : `<div class="card-action">查看配方</div>`}
         </article>
-      `).join("");
+      `;
+      }).join("");
 
       empty.style.display = filtered.length ? "none" : "block";
     }
 
     search.addEventListener("input", renderMenu);
+    grid.addEventListener("click", event => {
+      const card = event.target.closest(".card");
+      if (!card) return;
+      openCocktail = openCocktail === card.dataset.name ? null : card.dataset.name;
+      renderMenu();
+    });
+    grid.addEventListener("keydown", event => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      const card = event.target.closest(".card");
+      if (!card) return;
+      event.preventDefault();
+      openCocktail = openCocktail === card.dataset.name ? null : card.dataset.name;
+      renderMenu();
+    });
 
     renderFilters();
     renderMenu();
