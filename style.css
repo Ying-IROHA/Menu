@@ -1,0 +1,372 @@
+﻿/* 全局主题变量：集中管理赛博朋克霓虹色、暗底和发光阴影。 */
+:root {
+  --bg: #05070d;
+  --panel: rgba(8, 14, 28, 0.76);
+  --panel-2: rgba(18, 28, 48, 0.9);
+  --text: #f4fbff;
+  --muted: #8fb3c7;
+  --neon-pink: #ff2bd6;
+  --neon-cyan: #20f6ff;
+  --neon-lime: #d8ff3e;
+  --line: rgba(32, 246, 255, 0.32);
+  --hot-line: rgba(255, 43, 214, 0.52);
+  --shadow: 0 24px 80px rgba(0, 0, 0, .55), 0 0 38px rgba(32, 246, 255, .14);
+}
+
+/* 统一盒模型，避免宽度计算受到 padding 和 border 影响。 */
+* { box-sizing: border-box; }
+
+body {
+  position: relative;
+  margin: 0;
+  font-family: "Rajdhani", "DIN Condensed", "Bahnschrift", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background:
+    linear-gradient(115deg, rgba(255, 43, 214, .12), transparent 28%),
+    radial-gradient(circle at 18% 12%, rgba(32, 246, 255, .24), transparent 30%),
+    radial-gradient(circle at 84% 22%, rgba(255, 43, 214, .22), transparent 32%),
+    linear-gradient(180deg, rgba(5, 7, 13, .2), #05070d 70%),
+    var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+body::before {
+  z-index: 0;
+  background:
+    linear-gradient(rgba(32, 246, 255, .07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 43, 214, .055) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, .85), transparent 78%);
+}
+
+body::after {
+  z-index: 100;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(255, 255, 255, .035) 0,
+    rgba(255, 255, 255, .035) 1px,
+    transparent 1px,
+    transparent 8px
+  );
+  mix-blend-mode: screen;
+  opacity: .28;
+}
+
+/* 顶部标题区。 */
+header {
+  position: relative;
+  z-index: 1;
+  padding: 62px 20px 34px;
+  text-align: center;
+}
+
+.eyebrow {
+  color: var(--neon-lime);
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  font-size: 12px;
+  margin-bottom: 12px;
+  text-shadow: 0 0 16px rgba(216, 255, 62, .55);
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(36px, 8vw, 74px);
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  text-shadow:
+    0 0 20px rgba(32, 246, 255, .5),
+    7px 0 0 rgba(255, 43, 214, .55),
+    -5px 0 0 rgba(32, 246, 255, .38);
+}
+
+.subtitle {
+  color: var(--muted);
+  margin-top: 16px;
+  font-size: 15px;
+  text-shadow: 0 0 12px rgba(32, 246, 255, .22);
+}
+
+/* 搜索和分类栏固定在顶部，方便浏览长酒单时随时筛选。 */
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(20px) saturate(140%);
+  background: linear-gradient(90deg, rgba(5, 7, 13, .88), rgba(14, 20, 36, .82));
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--hot-line);
+  padding: 14px 16px;
+  box-shadow: 0 0 24px rgba(32, 246, 255, .12);
+}
+
+.toolbar-inner {
+  max-width: 1100px;
+  margin: auto;
+  display: grid;
+  gap: 12px;
+}
+
+.search {
+  width: 100%;
+  border: 1px solid var(--line);
+  background: rgba(3, 9, 18, .72);
+  color: var(--text);
+  border-radius: 0;
+  padding: 14px 18px;
+  font-size: 15px;
+  outline: none;
+  box-shadow: inset 0 0 20px rgba(32, 246, 255, .08), 0 0 18px rgba(32, 246, 255, .08);
+  clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+  transition: border-color .18s ease, box-shadow .18s ease;
+}
+
+.search:focus {
+  border-color: var(--neon-pink);
+  box-shadow: inset 0 0 24px rgba(255, 43, 214, .12), 0 0 24px rgba(255, 43, 214, .2);
+}
+
+.search::placeholder { color: #5f8597; }
+
+.filters {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.filter {
+  border: 1px solid var(--line);
+  background: rgba(3, 9, 18, .62);
+  color: var(--text);
+  border-radius: 0;
+  padding: 9px 14px;
+  white-space: nowrap;
+  cursor: pointer;
+  font-size: 13px;
+  text-transform: uppercase;
+  box-shadow: inset 0 0 14px rgba(32, 246, 255, .07);
+  transition: color .16s ease, border-color .16s ease, box-shadow .16s ease, background .16s ease;
+}
+
+.filter:hover {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 18px rgba(32, 246, 255, .2);
+}
+
+.filter.active {
+  background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
+  color: #05070d;
+  border-color: transparent;
+  font-weight: 700;
+  box-shadow: 0 0 20px rgba(255, 43, 214, .26), 0 0 22px rgba(32, 246, 255, .2);
+}
+
+/* 主体卡片区使用响应式网格，屏幕变窄时自动减少列数。 */
+main {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: auto;
+  padding: 28px 16px 64px;
+}
+
+.count {
+  color: var(--muted);
+  margin: 0 0 18px;
+  font-size: 14px;
+  letter-spacing: .08em;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(32, 246, 255, .13), transparent 28%),
+    linear-gradient(180deg, var(--panel-2), var(--panel));
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+  min-height: 132px;
+  cursor: pointer;
+  transition: transform .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease;
+  clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 22px 100%, 0 calc(100% - 22px));
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, transparent, rgba(255, 255, 255, .08), transparent),
+    repeating-linear-gradient(180deg, transparent 0, transparent 10px, rgba(32, 246, 255, .04) 11px);
+  transform: translateX(-120%);
+  transition: transform .45s ease;
+  pointer-events: none;
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(var(--neon-pink), var(--neon-cyan));
+  box-shadow: 0 0 18px rgba(32, 246, 255, .55);
+}
+
+.card:hover,
+.card:focus {
+  border-color: rgba(255, 43, 214, .72);
+  transform: translateY(-3px);
+  box-shadow: 0 26px 80px rgba(0, 0, 0, .62), 0 0 34px rgba(255, 43, 214, .22);
+  outline: none;
+}
+
+.card:hover::before,
+.card:focus::before {
+  transform: translateX(120%);
+}
+
+.card.open {
+  background:
+    linear-gradient(135deg, rgba(255, 43, 214, .18), transparent 36%),
+    linear-gradient(180deg, rgba(24, 38, 66, .94), var(--panel));
+  border-color: var(--neon-pink);
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.name {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.15;
+  letter-spacing: .02em;
+  text-shadow: 0 0 16px rgba(32, 246, 255, .24);
+}
+
+.zh {
+  color: var(--muted);
+  margin-top: 6px;
+  font-size: 14px;
+}
+
+.taste {
+  color: #bfeef7;
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.tag {
+  color: #05070d;
+  background: var(--neon-lime);
+  border-radius: 2px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 0 18px rgba(216, 255, 62, .26);
+}
+
+.card-meta {
+  display: grid;
+  justify-items: end;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+.price {
+  color: var(--neon-cyan);
+  font-size: 20px;
+  font-weight: 800;
+  white-space: nowrap;
+  text-shadow: 0 0 14px rgba(32, 246, 255, .46);
+}
+
+.card-action {
+  color: var(--neon-pink);
+  border-top: 1px solid rgba(32, 246, 255, .16);
+  margin-top: 12px;
+  padding-top: 10px;
+  font-size: 13px;
+  letter-spacing: .08em;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 14px 0 0;
+  display: grid;
+  gap: 8px;
+}
+
+li {
+  color: #dffcff;
+  border-top: 1px solid rgba(32, 246, 255, .16);
+  padding-top: 8px;
+  font-size: 14px;
+}
+
+.empty {
+  display: none;
+  text-align: center;
+  color: var(--muted);
+  padding: 48px 12px;
+  border: 1px dashed var(--line);
+  border-radius: 6px;
+  background: rgba(3, 9, 18, .45);
+}
+
+footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  color: #4e7485;
+  padding: 20px;
+  font-size: 12px;
+  letter-spacing: .18em;
+}
+
+@media (max-width: 560px) {
+  header {
+    padding-top: 46px;
+  }
+
+  .card-top {
+    display: grid;
+  }
+
+  .card-meta {
+    grid-auto-flow: column;
+    justify-content: space-between;
+    justify-items: start;
+    align-items: center;
+  }
+}
