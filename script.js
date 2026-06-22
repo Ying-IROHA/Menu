@@ -401,6 +401,7 @@ const baseLabels = {
   Whiskey: "威士忌",
   Rum: "朗姆",
   Tequila: "龙舌兰",
+  Brandy: "白兰地",
   Campari: "Campari",
   Cognac: "干邑",
   Pisco: "皮斯科",
@@ -507,6 +508,7 @@ const baseColors = {
   Whiskey: "#c18a55",
   Rum: "#b69268",
   Tequila: "#c3ad62",
+  Brandy: "#a6684b",
   Campari: "#b94d5d",
   Cognac: "#a6684b",
   Pisco: "#b7a987",
@@ -514,7 +516,8 @@ const baseColors = {
   Mixed: "#9b789c"
 };
 
-const primaryBases = ["Gin", "Vodka", "Whiskey", "Rum", "Tequila", "Cognac"];
+const primaryBases = ["Gin", "Vodka", "Whiskey", "Rum", "Tequila", "Brandy"];
+const primaryBaseValues = ["Gin", "Vodka", "Whiskey", "Rum", "Tequila", "Brandy", "Cognac"];
 
 // 只展示数据里实际存在的基酒分类，同时保留固定排序。
 function uniqueBases() {
@@ -593,7 +596,8 @@ function renderMenu() {
       : c.collection === "signature";
     const baseOk = currentBase === "All"
       || c.base === currentBase
-      || (currentBase === "Other" && !primaryBases.includes(c.base));
+      || (currentBase === "Brandy" && c.base === "Cognac")
+      || (currentBase === "Other" && !primaryBaseValues.includes(c.base));
     const searchOk = !keyword || matchCocktail(c, keyword);
     return collectionOk && baseOk && searchOk;
   });
