@@ -629,21 +629,57 @@ function renderMenu() {
   empty.style.display = filtered.length ? "none" : "block";
 }
 
+// 展开配方时只更新相关卡片，避免重建整个网格造成闪烁。
+function setCardOpen(card, shouldOpen) {
+  if (!card) return;
+
+  const cocktail = cocktails.find(item => item.name === card.dataset.name);
+  const action = card.querySelector(".card-action");
+  if (!cocktail || !action) return;
+
+  card.classList.toggle("open", shouldOpen);
+  card.setAttribute("aria-expanded", String(shouldOpen));
+
+  const existingRecipe = card.querySelector(".recipe");
+  if (shouldOpen && !existingRecipe) {
+    action.insertAdjacentHTML("beforebegin", `
+      <ul class="recipe">
+        ${cocktail.ingredients.map(item => `<li>${item}</li>`).join("")}
+      </ul>
+    `);
+  } else if (!shouldOpen && existingRecipe) {
+    existingRecipe.remove();
+  }
+
+  action.textContent = shouldOpen ? "收起配方" : "查看配方";
+}
+
+function toggleCard(card) {
+  const isClosing = openCocktail === card.dataset.name;
+
+  if (openCocktail && !isClosing) {
+    const previousCard = [...grid.querySelectorAll(".card")]
+      .find(item => item.dataset.name === openCocktail);
+    setCardOpen(previousCard, false);
+  }
+
+  openCocktail = isClosing ? null : card.dataset.name;
+  setCardOpen(card, !isClosing);
+}
+
 // 监听搜索输入、鼠标点击和键盘操作，保持卡片可访问性。
 search.addEventListener("input", renderMenu);
 grid.addEventListener("click", event => {
   const card = event.target.closest(".card");
   if (!card) return;
-  openCocktail = openCocktail === card.dataset.name ? null : card.dataset.name;
-  renderMenu();
+  toggleCard(card);
 });
 grid.addEventListener("keydown", event => {
   if (event.key !== "Enter" && event.key !== " ") return;
   const card = event.target.closest(".card");
   if (!card) return;
   event.preventDefault();
-  openCocktail = openCocktail === card.dataset.name ? null : card.dataset.name;
-  renderMenu();
+  toggleCard(card);
 });
 
 renderFilters();
