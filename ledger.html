@@ -44,9 +44,24 @@
         <p>从左侧加入酒款</p>
       </div>
       <div class="bill-total">
-        <span>应收合计</span>
+        <div><span>应收合计</span><small id="bill-original"></small></div>
         <strong id="bill-total">¥0</strong>
       </div>
+      <label class="discount-control" for="bill-discount">
+        <span>Discount · 心情折扣</span>
+        <select id="bill-discount">
+          <option value="100">原价</option>
+          <option value="90">9 折</option>
+          <option value="85">8.5 折</option>
+          <option value="80">8 折</option>
+          <option value="75">7.5 折</option>
+          <option value="70">7 折</option>
+          <option value="65">6.5 折</option>
+          <option value="60">6 折</option>
+          <option value="55">5.5 折</option>
+          <option value="50">5 折</option>
+        </select>
+      </label>
       <div class="bill-actions">
         <button id="bill-clear" class="button-secondary" type="button">清空</button>
         <button id="bill-checkout" class="button-primary" type="button">完成结账</button>

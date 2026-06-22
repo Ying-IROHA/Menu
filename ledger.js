@@ -65,6 +65,8 @@ const billLines = document.getElementById("bill-lines");
 const billEmpty = document.getElementById("bill-empty");
 const billBadge = document.getElementById("bill-badge");
 const billTotal = document.getElementById("bill-total");
+const billOriginal = document.getElementById("bill-original");
+const discountSelect = document.getElementById("bill-discount");
 const clearButton = document.getElementById("bill-clear");
 const checkoutButton = document.getElementById("bill-checkout");
 const historyNode = document.getElementById("ledger-history");
@@ -78,10 +80,11 @@ function loadState() {
     return {
       current: saved?.current && typeof saved.current === "object" ? saved.current : {},
       note: typeof saved?.note === "string" ? saved.note : "",
+      discount: [50, 55, 60, 65, 70, 75, 80, 85, 90, 100].includes(Number(saved?.discount)) ? Number(saved.discount) : 100,
       history: Array.isArray(saved?.history) ? saved.history : []
     };
   } catch {
-    return { current: {}, note: "", history: [] };
+    return { current: {}, note: "", discount: 100, history: [] };
   }
 }
 
@@ -103,11 +106,17 @@ function currentItems() {
 }
 
 function calculate(items = currentItems()) {
-  return items.reduce((result, item) => {
-    result.cups += item.quantity;
-    result.total += item.drink.price * item.quantity;
-    return result;
-  }, { cups: 0, total: 0 });
+  const result = items.reduce((totals, item) => {
+    totals.cups += item.quantity;
+    totals.subtotal += item.drink.price * item.quantity;
+    return totals;
+  }, { cups: 0, subtotal: 0 });
+  result.total = Math.round(result.subtotal * state.discount / 100);
+  return result;
+}
+
+function discountLabel(discount) {
+  return discount === 100 ? "原价" : `${discount / 10} 折`;
 }
 
 function showToast(message) {
@@ -163,6 +172,8 @@ function renderBill() {
   billEmpty.style.display = items.length ? "none" : "block";
   billBadge.textContent = `${totals.cups} 杯`;
   billTotal.textContent = `¥${totals.total}`;
+  billOriginal.textContent = state.discount < 100 && totals.subtotal ? `原价 ¥${totals.subtotal}` : "";
+  discountSelect.value = String(state.discount);
   noteInput.value = state.note;
   clearButton.disabled = items.length === 0;
   checkoutButton.disabled = items.length === 0;
@@ -178,7 +189,7 @@ function renderHistory() {
   historyNode.innerHTML = state.history.map(record => `
     <article class="history-card">
       <div class="history-head">
-        <div><div class="history-date">${formatDate(record.createdAt)}</div>${record.note ? `<div class="history-note">${escapeHTML(record.note)}</div>` : ""}</div>
+        <div><div class="history-date">${formatDate(record.createdAt)}</div>${record.note ? `<div class="history-note">${escapeHTML(record.note)}</div>` : ""}${record.discount && record.discount < 100 ? `<div class="history-note">${discountLabel(record.discount)} · 原价 ¥${record.subtotal}</div>` : ""}</div>
         <span class="history-price">¥${record.total}</span>
       </div>
       <div class="history-items">
@@ -226,10 +237,17 @@ noteInput.addEventListener("input", () => {
   saveState();
 });
 
+discountSelect.addEventListener("change", () => {
+  state.discount = Number(discountSelect.value);
+  saveState();
+  renderBill();
+});
+
 clearButton.addEventListener("click", () => {
   if (!currentItems().length || !window.confirm("确定清空当前账单吗？")) return;
   state.current = {};
   state.note = "";
+  state.discount = 100;
   saveState();
   renderBill();
 });
@@ -243,6 +261,8 @@ checkoutButton.addEventListener("click", () => {
     createdAt: new Date().toISOString(),
     note: state.note.trim(),
     cups: totals.cups,
+    subtotal: totals.subtotal,
+    discount: state.discount,
     total: totals.total,
     items: items.map(({ drink, quantity }) => ({
       name: drink.name,
@@ -255,6 +275,7 @@ checkoutButton.addEventListener("click", () => {
   state.history = state.history.slice(0, 100);
   state.current = {};
   state.note = "";
+  state.discount = 100;
   saveState();
   renderBill();
   renderHistory();

@@ -76,8 +76,14 @@ button, input { font: inherit; }
 .bill-empty span { color: var(--wine); font-size: 28px; }
 .bill-empty p { margin: 8px 0 0; font-family: var(--cn); font-size: 10px; }
 .bill-total { display: flex; justify-content: space-between; align-items: end; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--line); }
+.bill-total > div { display: grid; gap: 4px; }
 .bill-total span { color: var(--dim); font-family: var(--cn); font-size: 9px; letter-spacing: .12em; }
+.bill-total small { min-height: 14px; color: var(--wine); font-size: 10px; text-decoration: line-through; }
 .bill-total strong { color: var(--gold); font-size: 31px; font-style: italic; font-weight: 500; }
+.discount-control { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-top: 12px; padding: 11px 12px; border: 1px solid var(--line); background: rgba(154,64,86,.06); }
+.discount-control span { color: var(--paper); font-family: var(--cn); font-size: 9px; letter-spacing: .08em; }
+.discount-control select { min-width: 88px; padding: 6px 24px 6px 9px; border: 1px solid var(--line); outline: 0; color: var(--gold); background: var(--panel-soft); font-family: var(--cn); font-size: 10px; cursor: pointer; }
+.discount-control select:focus { border-color: var(--gold); }
 .bill-actions { display: grid; grid-template-columns: 82px 1fr; gap: 9px; margin-top: 14px; }
 .bill-actions button { min-height: 42px; cursor: pointer; font-family: var(--cn); font-size: 10px; letter-spacing: .08em; }
 .button-secondary { border: 1px solid var(--line); color: var(--dim); background: transparent; }
