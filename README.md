@@ -7,12 +7,12 @@
 ### 一份写给夜晚，并持续生长的调酒索引
 
 <p>
-  <a href="https://ying-iroha.github.io/Menu/"><img alt="Live Menu" src="https://img.shields.io/badge/LIVE_MENU-c9a86a?style=for-the-badge&labelColor=171013"></a>
-  <img alt="Vanilla JavaScript" src="https://img.shields.io/badge/VANILLA_JS-9a4056?style=for-the-badge&labelColor=171013">
-  <img alt="Local First" src="https://img.shields.io/badge/LOCAL_FIRST-c9a86a?style=for-the-badge&labelColor=171013">
+  <a href="https://ying-iroha.github.io/Menu/"><img alt="进入在线酒单" src="./assets/readme-live-menu.svg" height="46"></a>
+  &nbsp;
+  <a href="https://ying-iroha.github.io/Menu/ledger.html"><img alt="打开私人点单台" src="./assets/readme-private-ledger.svg" height="46"></a>
 </p>
 
-[进入在线酒单](https://ying-iroha.github.io/Menu/) · [打开私人点单台](https://ying-iroha.github.io/Menu/ledger.html)
+<p><sub>VANILLA JAVASCRIPT &nbsp;·&nbsp; NO BUILD &nbsp;·&nbsp; LOCAL FIRST</sub></p>
 
 </div>
 
