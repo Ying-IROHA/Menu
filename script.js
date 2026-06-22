@@ -395,6 +395,7 @@ const cocktails = [
 // 基酒英文值到页面中文标签的映射，用于筛选按钮和卡片标签。
 const baseLabels = {
   All: "全部",
+  Other: "其他",
   Gin: "金酒",
   Vodka: "伏特加",
   Whiskey: "威士忌",
@@ -409,43 +410,43 @@ const baseLabels = {
 
 // 风味说明表，后续只需要改这里即可补充每款酒的描述。
 const tasteNotes = {
-  "Americano": "风味-等待填写中",
-  "Aviation": "风味-等待填写中",
-  "Bee’s Knees": "风味-等待填写中",
-  "Black Russian": "风味-等待填写中",
-  "Bloody Mary": "风味-等待填写中",
-  "Boulevardier": "风味-等待填写中",
-  "Cardinale": "风味-等待填写中",
-  "Clover Club": "风味-等待填写中",
-  "Cosmopolitan": "风味-等待填写中",
-  "Cuba Libre": "风味-等待填写中",
-  "Daiquiri": "风味-等待填写中",
-  "Dry Martini": "风味-等待填写中",
-  "Espresso Martini": "风味-等待填写中",
-  "French 75": "风味-等待填写中",
-  "French Martini": "风味-等待填写中",
-  "Garibaldi": "风味-等待填写中",
-  "Gin Fizz": "风味-等待填写中",
-  "Grand Margarita": "风味-等待填写中",
-  "Hemingway special": "风味-等待填写中",
-  "John Collins": "风味-等待填写中",
-  "Last Word": "风味-等待填写中",
-  "Long Island Iced Tea": "风味-等待填写中",
-  "Manhattan": "风味-等待填写中",
-  "Margarita": "风味-等待填写中",
-  "Martinez": "风味-等待填写中",
-  "Negroni": "风味-等待填写中",
-  "New York Sour": "风味-等待填写中",
-  "Old Fashioned": "风味-等待填写中",
-  "Pisco Sour": "风味-等待填写中",
-  "Ramos Gin Fizz": "风味-等待填写中",
-  "Sea Breeze": "风味-等待填写中",
-  "Sex on the beach": "风味-等待填写中",
-  "Sidecar": "风味-等待填写中",
-  "Tequila Sunrise": "风味-等待填写中",
-  "Trinidad Sour": "风味-等待填写中",
-  "Whiskey Sour": "风味-等待填写中",
-  "White Lady": "风味-等待填写中"
+  "Americano": "草本微苦 · 气泡轻盈 · 适合作为开场",
+  "Aviation": "紫罗兰花香 · 柑橘酸度 · 优雅而冷冽",
+  "Bee’s Knees": "蜂蜜柔甜 · 青柠明亮 · 金酒植物香",
+  "Black Russian": "咖啡烘烤 · 酒体厚重 · 苦甜直接",
+  "Bloody Mary": "番茄鲜咸 · 香料辛辣 · 复杂浓郁",
+  "Boulevardier": "橙皮苦香 · 谷物温暖 · 深沉圆润",
+  "Cardinale": "干爽草本 · 苦橙清晰 · 利落克制",
+  "Clover Club": "覆盆子果香 · 绵密泡沫 · 酸甜轻盈",
+  "Cosmopolitan": "蔓越莓酸甜 · 柑橘清爽 · 都市感",
+  "Cuba Libre": "焦糖气泡 · 青柠清亮 · 轻松畅饮",
+  "Daiquiri": "朗姆甘蔗香 · 青柠锐利 · 纯粹平衡",
+  "Dry Martini": "极干净 · 杜松主导 · 冷冽而经典",
+  "Espresso Martini": "浓缩咖啡 · 香草甜感 · 丝滑醒神",
+  "French 75": "香槟气泡 · 柠檬明亮 · 轻快优雅",
+  "French Martini": "热带果香 · 覆盆子甜 · 柔顺讨喜",
+  "Garibaldi": "鲜橙绵密 · 苦甜平衡 · 阳光明亮",
+  "Gin Fizz": "柠檬酸爽 · 气泡活泼 · 干净轻盈",
+  "Grand Margarita": "龙舌兰植物香 · 柑橘饱满 · 酸爽",
+  "Hemingway special": "葡萄柚清苦 · 樱桃核香 · 干爽",
+  "John Collins": "柠檬气泡 · 杜松草本 · 清爽修长",
+  "Last Word": "草药浓郁 · 青柠锐利 · 四味精确平衡",
+  "Long Island Iced Tea": "柑橘可乐 · 酒感强烈 · 甜爽",
+  "Manhattan": "黑麦辛香 · 香艾酒甜润 · 成熟深邃",
+  "Margarita": "青柠鲜明 · 龙舌兰矿物感 · 盐边提味",
+  "Martinez": "草本甜润 · 樱桃核香 · 马天尼的前奏",
+  "Negroni": "苦橙 · 草本 · 甜苦等量的永恒经典",
+  "New York Sour": "威士忌酸甜 · 红酒单宁 · 层次分明",
+  "Old Fashioned": "木桶香草 · 苦精辛香 · 直接醇厚",
+  "Pisco Sour": "葡萄蒸馏香 · 柑橘酸度 · 泡沫细腻",
+  "Ramos Gin Fizz": "橙花奶香 · 绵密悠长 · 值得等待",
+  "Sea Breeze": "蔓越莓清酸 · 葡萄柚微苦 · 海风般轻快",
+  "Sex on the beach": "桃子甜香 · 热带果汁 · 轻松易饮",
+  "Sidecar": "干邑果干 · 橙香 · 酸度锋利而温暖",
+  "Tequila Sunrise": "橙汁明亮 · 石榴甜美 · 渐层日出",
+  "Trinidad Sour": "苦精香料 · 杏仁甜香 · 大胆而平衡",
+  "Whiskey Sour": "柠檬酸甜 · 谷物温暖 · 泡沫柔滑",
+  "White Lady": "柑橘清冽 · 杜松优雅 · 干净利落"
 };
 
 // 价格表按鸡尾酒英文名匹配，便于统一调整展示价格。
@@ -489,6 +490,7 @@ const prices = {
   "White Lady": 88
 };
 
+let currentCollection = "classic";
 let currentBase = "All";
 let openCocktail = null;
 
@@ -499,22 +501,66 @@ const filters = document.getElementById("filters");
 const count = document.getElementById("count");
 const empty = document.getElementById("empty");
 
+const baseColors = {
+  Gin: "#a8b88a",
+  Vodka: "#93aeba",
+  Whiskey: "#c18a55",
+  Rum: "#b69268",
+  Tequila: "#c3ad62",
+  Campari: "#b94d5d",
+  Cognac: "#a6684b",
+  Pisco: "#b7a987",
+  Bitters: "#9c4d3f",
+  Mixed: "#9b789c"
+};
+
+const primaryBases = ["Gin", "Vodka", "Whiskey", "Rum", "Tequila", "Cognac"];
+
 // 只展示数据里实际存在的基酒分类，同时保留固定排序。
 function uniqueBases() {
-  const preferred = ["All", "Gin", "Vodka", "Whiskey", "Rum", "Tequila", "Campari", "Cognac", "Pisco", "Bitters", "Mixed"];
-  const actual = new Set(cocktails.map(c => c.base));
-  return preferred.filter(b => b === "All" || actual.has(b));
+  return ["All", ...primaryBases, "Other"];
 }
 
-// 渲染分类按钮，并在点击后更新当前分类和酒单。
+// 两层索引：第一层区分经典与特调，第二层按六大基酒筛选。
 function renderFilters() {
-  filters.innerHTML = uniqueBases().map(base => `
-    <button class="filter ${base === currentBase ? "active" : ""}" data-base="${base}">
-      ${baseLabels[base] || base}
-    </button>
-  `).join("");
+  const collections = [
+    { value: "classic", label: "经典鸡尾酒", en: "Classics" },
+    { value: "signature", label: "特调", en: "Signatures" }
+  ];
 
-  document.querySelectorAll(".filter").forEach(btn => {
+  filters.innerHTML = `
+    <div class="filter-row collection-row" aria-label="酒单类型">
+      <span class="filter-row-label">01 · 酒单</span>
+      <div class="filter-options">
+        ${collections.map(item => `
+          <button class="filter collection-filter ${item.value === currentCollection ? "active" : ""}" data-collection="${item.value}">
+            <span>${item.label}</span><small>${item.en}</small>
+          </button>
+        `).join("")}
+      </div>
+    </div>
+    <div class="filter-row base-row" aria-label="基酒类型">
+      <span class="filter-row-label">02 · 基酒</span>
+      <div class="filter-options">
+        ${uniqueBases().map(base => `
+          <button class="filter base-filter ${base === currentBase ? "active" : ""}" data-base="${base}">
+            ${base === "All" ? "全部基酒" : baseLabels[base] || base}
+          </button>
+        `).join("")}
+      </div>
+    </div>
+  `;
+
+  document.querySelectorAll(".collection-filter").forEach(btn => {
+    btn.addEventListener("click", () => {
+      currentCollection = btn.dataset.collection;
+      openCocktail = null;
+      renderFilters();
+      renderMenu();
+    });
+  });
+
+  document.querySelectorAll(".base-filter").forEach(btn => {
     btn.addEventListener("click", () => {
       currentBase = btn.dataset.base;
       renderFilters();
@@ -542,20 +588,28 @@ function renderMenu() {
   const keyword = search.value.trim();
 
   const filtered = cocktails.filter(c => {
-    const baseOk = currentBase === "All" || c.base === currentBase;
+    const collectionOk = currentCollection === "classic"
+      ? (c.collection || "classic") === "classic"
+      : c.collection === "signature";
+    const baseOk = currentBase === "All"
+      || c.base === currentBase
+      || (currentBase === "Other" && !primaryBases.includes(c.base));
     const searchOk = !keyword || matchCocktail(c, keyword);
-    return baseOk && searchOk;
+    return collectionOk && baseOk && searchOk;
   });
 
-  count.textContent = `当前显示 ${filtered.length} / ${cocktails.length} 款鸡尾酒`;
+  const collectionName = currentCollection === "classic" ? "CLASSICS" : "SIGNATURES";
+  count.textContent = `${String(filtered.length).padStart(2, "0")} ${collectionName}`;
 
-  grid.innerHTML = filtered.map(c => {
+  grid.innerHTML = filtered.map((c, index) => {
     const isOpen = openCocktail === c.name;
+    const number = String(cocktails.indexOf(c) + 1).padStart(2, "0");
 
     return `
-    <article class="card ${isOpen ? "open" : ""}" data-name="${c.name}" role="button" tabindex="0" aria-expanded="${isOpen}">
+    <article class="card ${isOpen ? "open" : ""}" data-name="${c.name}" data-index="${number}" role="button" tabindex="0" aria-expanded="${isOpen}" style="--accent:${baseColors[c.base] || "#a95164"};--delay:${Math.min(index, 10) * 45}ms">
       <div class="card-top">
-        <div>
+        <div class="card-title">
+          <span class="card-index">N° ${number} · ${c.base.toUpperCase()}</span>
           <h2 class="name">${c.name}</h2>
           ${c.zh ? `<div class="zh">${c.zh}</div>` : ""}
           ${tasteNotes[c.name] ? `<div class="taste">${tasteNotes[c.name]}</div>` : ""}
@@ -565,7 +619,7 @@ function renderMenu() {
           ${prices[c.name] ? `<span class="price">&yen;${prices[c.name]}</span>` : ""}
         </div>
       </div>
-      ${isOpen ? `<ul>
+      ${isOpen ? `<ul class="recipe">
         ${c.ingredients.map(i => `<li>${i}</li>`).join("")}
       </ul><div class="card-action">收起配方</div>` : `<div class="card-action">查看配方</div>`}
     </article>

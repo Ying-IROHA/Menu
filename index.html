@@ -3,33 +3,64 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>经典鸡尾酒酒单</title>
+  <meta name="theme-color" content="#140d10" />
+  <meta name="description" content="经典鸡尾酒配方与风味酒单" />
+  <title>Nocturne · 经典鸡尾酒酒单</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- 页面头部：展示酒单标题和简短说明。 -->
-  <header>
-    <div class="eyebrow">Cocktail Menu</div>
-    <h1>鸡尾酒酒单</h1>
-    <div class="subtitle">以下配方仅供参考</div>
+  <header class="hero">
+    <div class="hero-orbit" aria-hidden="true">
+      <span class="orbit orbit-one"></span>
+      <span class="orbit orbit-two"></span>
+      <span class="hero-mark">N</span>
+    </div>
+    <div class="hero-copy">
+      <div class="eyebrow"><span>Est.</span> After Midnight <span>2026</span></div>
+      <p class="kicker">A study in spirits, citrus &amp; time</p>
+      <h1><span>Nocturne</span>鸡尾酒酒单</h1>
+      <div class="hero-rule" aria-hidden="true"><span>✦</span></div>
+      <p class="subtitle">一份写给夜晚，并持续生长的调酒索引。</p>
+    </div>
+    <div class="hero-note" aria-hidden="true">
+      <span>01</span>
+      <span>精选经典</span>
+      <span>Archive</span>
+    </div>
   </header>
 
-  <!-- 工具栏：搜索输入框和基酒分类按钮由脚本动态渲染。 -->
   <section class="toolbar">
     <div class="toolbar-inner">
-      <input id="search" class="search" placeholder="搜索酒名、基酒或材料" />
+      <label class="search-wrap" for="search">
+        <span class="search-icon" aria-hidden="true"></span>
+        <input id="search" class="search" type="search" autocomplete="off" placeholder="寻找一杯酒、基酒或风味…" />
+        <span class="search-label">Search the archive</span>
+      </label>
       <div id="filters" class="filters"></div>
     </div>
   </section>
 
-  <!-- 酒单列表：卡片内容、数量和空状态都由脚本根据筛选结果更新。 -->
   <main>
-    <p id="count" class="count"></p>
+    <div class="section-heading">
+      <div>
+        <span class="section-index">The collection</span>
+        <h2>经典调酒档案</h2>
+      </div>
+      <p id="count" class="count" aria-live="polite"></p>
+    </div>
     <section id="grid" class="grid"></section>
-    <section id="empty" class="empty">没有找到对应鸡尾酒。</section>
+    <section id="empty" class="empty">
+      <span>∅</span>
+      <h2>今晚没有这一杯</h2>
+      <p>换一个名字、材料或基酒试试。</p>
+    </section>
   </main>
 
-  <footer>0.0</footer>
+  <footer>
+    <span>Nocturne Cocktail Archive</span>
+    <i aria-hidden="true"></i>
+    <span>Drink with intention</span>
+  </footer>
   <script src="script.js"></script>
 </body>
 </html>
