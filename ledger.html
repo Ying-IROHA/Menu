@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#100b0d" />
+  <title>Nocturne · 私人点单台</title>
+  <link rel="stylesheet" href="ledger.css" />
+</head>
+<body>
+  <header class="ledger-header">
+    <div>
+      <span class="eyebrow">Private bar ledger</span>
+      <h1>私人点单台</h1>
+      <p>由你记录、结账并保存每一次饮用。</p>
+    </div>
+    <a href="index.html" class="menu-link">查看客用酒单 ↗</a>
+  </header>
+
+  <main class="workspace">
+    <section class="catalog-panel">
+      <div class="panel-heading">
+        <div><span>01</span><h2>选择酒款</h2></div>
+        <label class="search-wrap">
+          <span aria-hidden="true"></span>
+          <input id="ledger-search" type="search" autocomplete="off" placeholder="搜索中英文酒名" />
+        </label>
+      </div>
+      <div id="ledger-filters" class="ledger-filters"></div>
+      <div id="ledger-catalog" class="ledger-catalog"></div>
+      <div id="catalog-empty" class="empty-state">没有找到对应酒款</div>
+    </section>
+
+    <aside class="bill-panel">
+      <div class="panel-heading bill-heading">
+        <div><span>02</span><h2>当前账单</h2></div>
+        <strong id="bill-badge">0 杯</strong>
+      </div>
+      <label class="note-label" for="ledger-note">本次备注</label>
+      <input id="ledger-note" class="note-input" type="text" maxlength="60" placeholder="客人、桌号或今晚的备注" />
+      <div id="bill-lines" class="bill-lines"></div>
+      <div id="bill-empty" class="bill-empty">
+        <span>＋</span>
+        <p>从左侧加入酒款</p>
+      </div>
+      <div class="bill-total">
+        <span>应收合计</span>
+        <strong id="bill-total">¥0</strong>
+      </div>
+      <div class="bill-actions">
+        <button id="bill-clear" class="button-secondary" type="button">清空</button>
+        <button id="bill-checkout" class="button-primary" type="button">完成结账</button>
+      </div>
+    </aside>
+
+    <section class="history-panel">
+      <div class="panel-heading">
+        <div><span>03</span><h2>饮用记录</h2></div>
+        <strong id="history-summary">尚无记录</strong>
+      </div>
+      <div id="ledger-history" class="ledger-history"></div>
+      <div id="ledger-history-empty" class="history-empty">完成结账后，记录会出现在这里。</div>
+    </section>
+  </main>
+
+  <div id="ledger-toast" class="ledger-toast" role="status" aria-live="polite"></div>
+  <script src="ledger.js"></script>
+</body>
+</html>
