@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="214" height="46" viewBox="0 0 214 46" role="img" aria-label="进入在线酒单">
+  <rect width="214" height="46" fill="#171013"/>
+  <rect x="1" y="1" width="212" height="44" fill="none" stroke="#c9a86a" stroke-opacity=".7"/>
+  <path d="M1 10h9V1M204 1v9h9M213 36h-9v9M10 45v-9H1" fill="none" stroke="#c9a86a"/>
+  <circle cx="24" cy="23" r="3" fill="none" stroke="#9a4056"/>
+  <path d="M20 23h8M24 19v8" stroke="#9a4056"/>
+  <text x="42" y="20" fill="#806f69" font-family="Georgia,serif" font-size="7" letter-spacing="2.2">COCKTAIL ARCHIVE</text>
+  <text x="42" y="32" fill="#f1e8d8" font-family="serif" font-size="12" letter-spacing="2">进入在线酒单</text>
+  <path d="M185 23h12m-4-4 4 4-4 4" fill="none" stroke="#c9a86a"/>
+</svg>
