@@ -1,5 +1,9 @@
 const catalog = [
   ["Off-menu Special", "临时特调", "Signature", 128],
+  ["Mezcal Negroni", "梅斯卡尔尼格罗尼", "Signature", 128],
+  ["Perfect Manhattan", "完美曼哈顿", "Signature", 128],
+  ["Sake Martini", "清酒马天尼", "Signature", 128],
+  ["Lemon Cake", "柠檬蛋糕", "Signature", 128],
   ["Americano", "美国佬", "Other", 58],
   ["Aviation", "飞行", "Gin", 98],
   ["Bee’s Knees", "蜂膝", "Gin", 78],

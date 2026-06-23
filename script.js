@@ -389,6 +389,55 @@ const cocktails = [
   "30ml Cointreau",
   "20ml Lemon juice"
 ]
+  },
+  {
+"name": "Mezcal Negroni",
+"zh": "梅斯卡尔尼格罗尼",
+"base": "Mezcal",
+"collection": "signature",
+"ingredients": [
+  "30ml Mezcal",
+  "30ml Campari",
+  "30ml Red Vermouth"
+]
+  },
+  {
+"name": "Perfect Manhattan",
+"zh": "完美曼哈顿",
+"base": "Whiskey",
+"collection": "signature",
+"ingredients": [
+  "30ml Bourbon Whiskey",
+  "30ml Rye Whiskey",
+  "15ml Dry Vermouth",
+  "15ml Sweet Vermouth",
+  "2 drops Bitters"
+]
+  },
+  {
+"name": "Sake Martini",
+"zh": "清酒马天尼",
+"base": "Gin",
+"collection": "signature",
+"ingredients": [
+  "30ml Sake",
+  "30ml Dry Gin",
+  "10ml Dry Vermouth",
+  "2 drops Bitters"
+]
+  },
+  {
+"name": "Lemon Cake",
+"zh": "柠檬蛋糕",
+"base": "Whiskey",
+"collection": "signature",
+"ingredients": [
+  "45ml Whiskey",
+  "15ml Baileys",
+  "15ml Elderflower Syrup",
+  "20ml Lemon juice",
+  "1 Whole Egg"
+]
   }
 ];
 
@@ -403,6 +452,7 @@ const baseLabels = {
   Tequila: "龙舌兰",
   Brandy: "白兰地",
   Campari: "Campari",
+  Mezcal: "梅斯卡尔",
   Cognac: "干邑",
   Pisco: "皮斯科",
   Bitters: "苦精",
@@ -447,7 +497,11 @@ const tasteNotes = {
   "Tequila Sunrise": "橙汁明亮 · 石榴甜美 · 渐层日出",
   "Trinidad Sour": "苦精香料 · 杏仁甜香 · 大胆而平衡",
   "Whiskey Sour": "柠檬酸甜 · 谷物温暖 · 泡沫柔滑",
-  "White Lady": "柑橘清冽 · 杜松优雅 · 干净利落"
+  "White Lady": "柑橘清冽 · 杜松优雅 · 干净利落",
+  "Mezcal Negroni": "烟熏龙舌兰 · 苦橙草本 · 深色而有张力",
+  "Perfect Manhattan": "波本柔甜 · 黑麦辛香 · 干甜味美思的优雅平衡",
+  "Sake Martini": "清酒米香 · 金酒冷冽 · 干味美思拉出细长尾韵",
+  "Lemon Cake": "柠檬蛋糕 · 奶油绵密 · 接骨木花香让尾韵轻盈"
 };
 
 // 价格保留原料成本高低关系，并映射到 58–168 元的酒单区间（人民币）。
@@ -488,7 +542,11 @@ const prices = {
   "Tequila Sunrise": 78,
   "Trinidad Sour": 158,
   "Whiskey Sour": 88,
-  "White Lady": 88
+  "White Lady": 88,
+  "Mezcal Negroni": 128,
+  "Perfect Manhattan": 128,
+  "Sake Martini": 128,
+  "Lemon Cake": 128
 };
 
 let currentCollection = "classic";
@@ -508,6 +566,7 @@ const baseColors = {
   Whiskey: "#c18a55",
   Rum: "#b69268",
   Tequila: "#c3ad62",
+  Mezcal: "#b86f4b",
   Brandy: "#a6684b",
   Campari: "#b94d5d",
   Cognac: "#a6684b",
