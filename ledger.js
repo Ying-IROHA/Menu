@@ -4,6 +4,7 @@ const catalog = [
   ["Perfect Manhattan", "完美曼哈顿", "Signature", 128],
   ["Sake Martini", "清酒马天尼", "Signature", 128],
   ["Lemon Cake", "柠檬蛋糕", "Signature", 128],
+  ["Tuxedo #2", "燕尾服", "Signature", 128],
   ["Americano", "美国佬", "Other", 58],
   ["Aviation", "飞行", "Gin", 98],
   ["Bee’s Knees", "蜂膝", "Gin", 78],

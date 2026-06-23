@@ -438,6 +438,18 @@ const cocktails = [
   "20ml Lemon juice",
   "1 Whole Egg"
 ]
+  },
+  {
+"name": "Tuxedo #2",
+"zh": "燕尾服",
+"base": "Gin",
+"collection": "signature",
+"ingredients": [
+  "50ml Gin",
+  "25ml Dry Vermouth",
+  "5ml Luxardo",
+  "1 dash Orange Bitters"
+]
   }
 ];
 
@@ -501,7 +513,8 @@ const tasteNotes = {
   "Mezcal Negroni": "烟熏龙舌兰 · 苦橙草本 · 深色而有张力",
   "Perfect Manhattan": "波本柔甜 · 黑麦辛香 · 干甜味美思的优雅平衡",
   "Sake Martini": "清酒米香 · 金酒冷冽 · 干味美思拉出细长尾韵",
-  "Lemon Cake": "柠檬蛋糕 · 奶油绵密 · 接骨木花香让尾韵轻盈"
+  "Lemon Cake": "柠檬蛋糕 · 奶油绵密 · 接骨木花香让尾韵轻盈",
+  "Tuxedo #2": "马天尼骨架 · 樱桃核香 · 橙苦精收出优雅尾韵"
 };
 
 // 价格保留原料成本高低关系，并映射到 58–168 元的酒单区间（人民币）。
@@ -546,7 +559,8 @@ const prices = {
   "Mezcal Negroni": 128,
   "Perfect Manhattan": 128,
   "Sake Martini": 128,
-  "Lemon Cake": 128
+  "Lemon Cake": 128,
+  "Tuxedo #2": 128
 };
 
 let currentCollection = "classic";
