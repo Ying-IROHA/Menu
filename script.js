@@ -716,11 +716,17 @@ function cocktailCollection(cocktail) {
   return cocktail.collection || "classic";
 }
 
+function sortByName(list) {
+  return [...list].sort((a, b) => a.name.localeCompare(b.name, "en", { sensitivity: "base" }));
+}
+
+function cocktailsInCollection(collection) {
+  return sortByName(cocktails.filter(item => cocktailCollection(item) === collection));
+}
+
 function collectionNumber(cocktail) {
   const collection = cocktailCollection(cocktail);
-  const index = cocktails
-    .filter(item => cocktailCollection(item) === collection)
-    .indexOf(cocktail);
+  const index = cocktailsInCollection(collection).indexOf(cocktail);
 
   return String(index + 1).padStart(2, "0");
 }
@@ -729,7 +735,7 @@ function collectionNumber(cocktail) {
 function renderMenu() {
   const keyword = search.value.trim();
 
-  const filtered = cocktails.filter(c => {
+  const filtered = sortByName(cocktails.filter(c => {
     const collectionOk = currentCollection === "classic"
       ? cocktailCollection(c) === "classic"
       : c.collection === "signature";
@@ -739,7 +745,7 @@ function renderMenu() {
       || (currentBase === "Other" && !primaryBaseValues.includes(c.base));
     const searchOk = !keyword || matchCocktail(c, keyword);
     return collectionOk && baseOk && searchOk;
-  });
+  }));
 
   const collectionName = currentCollection === "classic" ? "CLASSICS" : "SIGNATURES";
   count.textContent = `${String(filtered.length).padStart(2, "0")} ${collectionName}`;
