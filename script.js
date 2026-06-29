@@ -54,6 +54,17 @@ const cocktails = [
 ]
   },
   {
+"name": "Blood and Sand",
+"zh": "血与沙",
+"base": "Whiskey",
+"ingredients": [
+  "40ml Scotch Whiskey",
+  "30ml Orange Juice",
+  "15ml Cherry Liqueur",
+  "10ml Sweet Vermouth"
+]
+  },
+  {
 "name": "Boulevardier",
 "zh": "花花公子",
 "base": "Whiskey",
@@ -405,7 +416,6 @@ const cocktails = [
 "name": "Perfect Manhattan",
 "zh": "完美曼哈顿",
 "base": "Whiskey",
-"collection": "signature",
 "ingredients": [
   "30ml Bourbon Whiskey",
   "30ml Rye Whiskey",
@@ -443,12 +453,47 @@ const cocktails = [
 "name": "Tuxedo #2",
 "zh": "燕尾服",
 "base": "Gin",
-"collection": "signature",
 "ingredients": [
   "50ml Gin",
   "25ml Dry Vermouth",
   "5ml Luxardo",
   "1 dash Orange Bitters"
+]
+  },
+  {
+"name": "Bannockburn",
+"zh": "班诺克本",
+"base": "Whiskey",
+"ingredients": [
+  "45ml Smoked Whiskey",
+  "90ml Tomato Juice",
+  "15ml Lime Juice",
+  "5ml Sugar Syrup"
+]
+  },
+  {
+"name": "Yukiguni",
+"zh": "雪国",
+"base": "Other",
+"collection": "signature",
+"ingredients": [
+  "Fresh Cucumber",
+  "30ml Midori",
+  "30ml Cointreau",
+  "30ml Lemon Juice",
+  "5ml Peach Syrup"
+]
+  },
+  {
+"name": "Baijiu Martini",
+"zh": "白酒马天尼",
+"base": "Gin",
+"collection": "signature",
+"ingredients": [
+  "30ml Gin",
+  "30ml Baijiu",
+  "10ml White Vermouth",
+  "2 drops Bitters"
 ]
   }
 ];
@@ -478,6 +523,7 @@ const tasteNotes = {
   "Bee’s Knees": "蜂蜜柔甜 · 青柠明亮 · 金酒植物香",
   "Black Russian": "咖啡烘烤 · 酒体厚重 · 苦甜直接",
   "Bloody Mary": "番茄鲜咸 · 香料辛辣 · 复杂浓郁",
+  "Blood and Sand": "苏格兰烟麦 · 橙汁果香 · 樱桃与甜味美思交织",
   "Boulevardier": "橙皮苦香 · 谷物温暖 · 深沉圆润",
   "Cardinale": "干爽草本 · 苦橙清晰 · 利落克制",
   "Clover Club": "覆盆子果香 · 绵密泡沫 · 酸甜轻盈",
@@ -514,7 +560,10 @@ const tasteNotes = {
   "Perfect Manhattan": "波本柔甜 · 黑麦辛香 · 干甜味美思的优雅平衡",
   "Sake Martini": "清酒米香 · 金酒冷冽 · 干味美思拉出细长尾韵",
   "Lemon Cake": "柠檬蛋糕 · 奶油绵密 · 接骨木花香让尾韵轻盈",
-  "Tuxedo #2": "马天尼骨架 · 樱桃核香 · 橙苦精收出优雅尾韵"
+  "Tuxedo #2": "马天尼骨架 · 樱桃核香 · 橙苦精收出优雅尾韵",
+  "Bannockburn": "烟熏威士忌 · 番茄鲜感 · 青柠拉出清爽酸度",
+  "Yukiguni": "蜜瓜清甜 · 黄瓜清爽 · 柑橘与桃子铺出雪感果香",
+  "Baijiu Martini": "白酒芳香 · 金酒冷冽 · 白味美思带来干净收束"
 };
 
 // 价格保留原料成本高低关系，并映射到 58–168 元的酒单区间（人民币）。
@@ -524,6 +573,7 @@ const prices = {
   "Bee’s Knees": 78,
   "Black Russian": 78,
   "Bloody Mary": 78,
+  "Blood and Sand": 98,
   "Boulevardier": 108,
   "Cardinale": 88,
   "Clover Club": 88,
@@ -560,7 +610,10 @@ const prices = {
   "Perfect Manhattan": 128,
   "Sake Martini": 128,
   "Lemon Cake": 128,
-  "Tuxedo #2": 128
+  "Tuxedo #2": 128,
+  "Bannockburn": 128,
+  "Yukiguni": 128,
+  "Baijiu Martini": 128
 };
 
 let currentCollection = "classic";
@@ -659,13 +712,26 @@ function matchCocktail(cocktail, keyword) {
   return haystack.includes(keyword.toLowerCase());
 }
 
+function cocktailCollection(cocktail) {
+  return cocktail.collection || "classic";
+}
+
+function collectionNumber(cocktail) {
+  const collection = cocktailCollection(cocktail);
+  const index = cocktails
+    .filter(item => cocktailCollection(item) === collection)
+    .indexOf(cocktail);
+
+  return String(index + 1).padStart(2, "0");
+}
+
 // 根据当前分类、搜索关键字和展开状态重新生成酒单卡片。
 function renderMenu() {
   const keyword = search.value.trim();
 
   const filtered = cocktails.filter(c => {
     const collectionOk = currentCollection === "classic"
-      ? (c.collection || "classic") === "classic"
+      ? cocktailCollection(c) === "classic"
       : c.collection === "signature";
     const baseOk = currentBase === "All"
       || c.base === currentBase
@@ -680,7 +746,7 @@ function renderMenu() {
 
   grid.innerHTML = filtered.map((c, index) => {
     const isOpen = openCocktail === c.name;
-    const number = String(cocktails.indexOf(c) + 1).padStart(2, "0");
+    const number = collectionNumber(c);
 
     return `
     <article class="card ${isOpen ? "open" : ""}" data-name="${c.name}" data-index="${number}" role="button" tabindex="0" aria-expanded="${isOpen}" style="--accent:${baseColors[c.base] || "#a95164"};--delay:${Math.min(index, 10) * 45}ms">
