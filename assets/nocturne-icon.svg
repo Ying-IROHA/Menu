@@ -1,0 +1,21 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Nocturne">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="38%" r="62%">
+      <stop offset="0" stop-color="#2b171b"/>
+      <stop offset=".58" stop-color="#140d10"/>
+      <stop offset="1" stop-color="#0b0709"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="128" y1="74" x2="384" y2="438" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f1dba0"/>
+      <stop offset=".45" stop-color="#c9a86a"/>
+      <stop offset="1" stop-color="#8f6d3a"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#glow)"/>
+  <circle cx="256" cy="256" r="178" fill="none" stroke="#c9a86a" stroke-opacity=".34" stroke-width="3"/>
+  <circle cx="256" cy="256" r="126" fill="none" stroke="#7e293d" stroke-opacity=".72" stroke-width="2" stroke-dasharray="10 18"/>
+  <path d="M161 364V148h28l151 159V148h33v216h-28L194 204v160h-33Z" fill="url(#gold)"/>
+  <path d="M116 256h46M350 256h46" stroke="#a95164" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="256" cy="78" r="7" fill="#c9a86a"/>
+  <circle cx="256" cy="434" r="7" fill="#c9a86a"/>
+</svg>
