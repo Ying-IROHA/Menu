@@ -97,6 +97,9 @@ button, input { font: inherit; }
 .history-date { color: var(--paper); font-size: 13px; }
 .history-note { margin-top: 3px; color: var(--dim); font-family: var(--cn); font-size: 8px; }
 .history-price { color: var(--gold); font-size: 18px; font-style: italic; }
+.history-head-right { display: flex; align-items: center; gap: 8px; }
+.history-delete { border: 1px solid var(--line); color: var(--dim); background: transparent; width: 22px; height: 22px; line-height: 1; cursor: pointer; border-radius: 2px; font-size: 11px; }
+.history-delete:hover { color: var(--gold); border-color: var(--gold); }
 .history-items { display: grid; gap: 6px; margin-top: 11px; }
 .history-row { color: var(--dim); font-size: 11px; }
 .history-row span:first-child { color: var(--paper); }

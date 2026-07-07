@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <base href="/menu/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#100b0d" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Nocturne · 酒单管理后台</title>
+  <link rel="icon" href="assets/nocturne-icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="ledger.css" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+  <header class="ledger-header">
+    <div>
+      <span class="eyebrow">Back of house</span>
+      <h1>酒单管理后台</h1>
+      <p>增删改酒款、价格与配方，保存后客用酒单和点单台会立刻更新。</p>
+    </div>
+    <div class="admin-header-links">
+      <a href="index.html" class="menu-link">查看客用酒单 ↗</a>
+      <a href="ledger.html" class="menu-link">打开私人点单台 ↗</a>
+    </div>
+  </header>
+
+  <main class="admin-workspace">
+    <section class="admin-form-panel">
+      <div class="panel-heading">
+        <div><span id="form-mode-index">01</span><h2 id="form-title">新增酒款</h2></div>
+        <button id="form-cancel" class="button-secondary" type="button" hidden>取消编辑</button>
+      </div>
+
+      <form id="cocktail-form" class="cocktail-form">
+        <label>
+          <span>英文名（唯一标识）</span>
+          <input id="field-name" type="text" required maxlength="80" placeholder="例如 Negroni" />
+        </label>
+        <label>
+          <span>中文名</span>
+          <input id="field-zh" type="text" maxlength="40" placeholder="例如 尼格罗尼" />
+        </label>
+        <div class="form-row">
+          <label>
+            <span>基酒</span>
+            <select id="field-base">
+              <option value="Gin">Gin 金酒</option>
+              <option value="Vodka">Vodka 伏特加</option>
+              <option value="Whiskey">Whiskey 威士忌</option>
+              <option value="Rum">Rum 朗姆</option>
+              <option value="Tequila">Tequila 龙舌兰</option>
+              <option value="Brandy">Brandy 白兰地</option>
+              <option value="Cognac">Cognac 干邑</option>
+              <option value="Campari">Campari</option>
+              <option value="Mezcal">Mezcal 梅斯卡尔</option>
+              <option value="Pisco">Pisco 皮斯科</option>
+              <option value="Bitters">Bitters 苦精</option>
+              <option value="Mixed">Mixed 混合基酒</option>
+              <option value="Other">Other 其他</option>
+            </select>
+          </label>
+          <label>
+            <span>酒单分类</span>
+            <select id="field-collection">
+              <option value="classic">经典 Classics</option>
+              <option value="signature">特调 Signatures</option>
+            </select>
+          </label>
+        </div>
+        <div class="form-row">
+          <label>
+            <span>价格（元）</span>
+            <input id="field-price" type="number" min="0" step="1" required placeholder="88" />
+          </label>
+          <label>
+            <span>点单台置顶顺序（选填）</span>
+            <input id="field-ledger-priority" type="number" min="1" step="1" placeholder="不填=按字母排序" />
+          </label>
+        </div>
+        <label>
+          <span>风味描述</span>
+          <input id="field-taste-note" type="text" maxlength="120" placeholder="例如 苦橙 · 草本 · 甜苦等量的永恒经典" />
+        </label>
+        <label>
+          <span>配方（每行一种材料）</span>
+          <textarea id="field-ingredients" rows="6" placeholder="30ml Gin&#10;30ml Campari&#10;30ml Red Vermouth"></textarea>
+        </label>
+
+        <p id="form-error" class="form-error" hidden></p>
+
+        <div class="bill-actions">
+          <button type="button" id="form-reset" class="button-secondary">清空</button>
+          <button type="submit" id="form-submit" class="button-primary">保存酒款</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="admin-list-panel">
+      <div class="panel-heading">
+        <div><span>02</span><h2>全部酒款</h2></div>
+        <strong id="cocktail-count">加载中…</strong>
+      </div>
+      <label class="search-wrap">
+        <input id="admin-search" type="search" autocomplete="off" placeholder="按名称、基酒搜索" />
+      </label>
+      <div id="cocktail-table" class="cocktail-table"></div>
+      <div id="cocktail-empty" class="empty-state" hidden>没有找到对应酒款</div>
+    </section>
+  </main>
+
+  <div id="admin-toast" class="ledger-toast" role="status" aria-live="polite"></div>
+  <script src="admin.js"></script>
+</body>
+</html>

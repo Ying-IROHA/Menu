@@ -1,0 +1,80 @@
+/* Admin panel styling — reuses the :root variables and base layout rules
+   already defined in ledger.css (loaded before this file). */
+
+.admin-header-links { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+
+.admin-workspace {
+  max-width: 1440px;
+  margin: auto;
+  padding: 28px 32px 80px;
+  display: grid;
+  grid-template-columns: minmax(340px, .8fr) minmax(0, 1.4fr);
+  gap: 22px;
+  align-items: start;
+}
+
+.admin-form-panel, .admin-list-panel {
+  border: 1px solid var(--line);
+  background: rgba(23,16,19,.86);
+  padding: 24px;
+}
+
+.admin-form-panel { position: sticky; top: 18px; }
+
+.cocktail-form { display: grid; gap: 14px; margin-top: 18px; }
+.cocktail-form label { display: grid; gap: 6px; font-family: var(--cn); font-size: 10px; letter-spacing: .06em; color: var(--dim); }
+.cocktail-form input, .cocktail-form select, .cocktail-form textarea {
+  padding: 9px 11px;
+  border: 1px solid var(--line);
+  background: var(--panel-soft);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 15px;
+  outline: 0;
+  resize: vertical;
+}
+.cocktail-form input:focus, .cocktail-form select:focus, .cocktail-form textarea:focus { border-color: var(--gold); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.form-error { margin: 0; padding: 9px 11px; border: 1px solid var(--wine); color: var(--wine); font-family: var(--cn); font-size: 10px; }
+
+#admin-search { width: 100%; padding: 9px 11px; border: 1px solid var(--line); background: var(--panel-soft); color: var(--ink); font-family: var(--serif); font-size: 15px; outline: 0; margin: 18px 0 16px; }
+#admin-search:focus { border-color: var(--gold); }
+
+.cocktail-table { display: grid; gap: 10px; }
+.cocktail-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 14px;
+  align-items: center;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,.015);
+}
+.cocktail-row-main { display: grid; gap: 3px; }
+.cocktail-row-main .name-line { display: flex; align-items: baseline; gap: 9px; flex-wrap: wrap; }
+.cocktail-row-main .name-line strong { font-family: var(--serif); font-size: 18px; }
+.cocktail-row-main .name-line em { font-style: normal; color: var(--dim); font-family: var(--cn); font-size: 12px; }
+.cocktail-row-main .meta-line { color: var(--dim); font-family: var(--cn); font-size: 10px; letter-spacing: .04em; }
+.cocktail-row-main .meta-line .price { color: var(--gold); }
+.cocktail-row-actions { display: flex; gap: 8px; }
+.cocktail-row-actions button {
+  padding: 7px 13px;
+  border: 1px solid var(--line);
+  color: var(--dim);
+  background: transparent;
+  font-family: var(--cn);
+  font-size: 10px;
+  letter-spacing: .06em;
+  cursor: pointer;
+}
+.cocktail-row-actions .edit-btn:hover { color: var(--gold); border-color: var(--gold); }
+.cocktail-row-actions .delete-btn:hover { color: var(--wine); border-color: var(--wine); }
+
+.tag-signature { color: var(--wine); }
+
+@media (max-width: 860px) {
+  .admin-workspace { grid-template-columns: 1fr; }
+  .admin-form-panel { position: static; }
+  .form-row { grid-template-columns: 1fr; }
+  .cocktail-row { grid-template-columns: 1fr; }
+}
