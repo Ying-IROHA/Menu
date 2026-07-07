@@ -5,11 +5,13 @@ Menu/ folder) at the root path, so the whole app runs from a single
 `uvicorn main:app` process.
 """
 import os
+import secrets
 from typing import List, Optional
 
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy import func
 from sqlalchemy.orm import Session
@@ -52,6 +54,33 @@ app.add_middleware(
 
 
 # ---------------------------------------------------------------------------
+# Admin auth — one shared username/password (HTTP Basic) protects the admin
+# page and every write to the menu. Read the credentials from environment
+# variables so nothing sensitive ever lives in source control; set
+# ADMIN_USERNAME / ADMIN_PASSWORD before starting the server in production
+# (see the root README). The fallback below is only for local testing.
+# ---------------------------------------------------------------------------
+
+ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "admin")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "nocturne")
+ADMIN_REALM = "Nocturne Admin"
+
+security = HTTPBasic()
+
+
+def require_admin(credentials: HTTPBasicCredentials = Depends(security)) -> str:
+    valid_username = secrets.compare_digest(credentials.username, ADMIN_USERNAME)
+    valid_password = secrets.compare_digest(credentials.password, ADMIN_PASSWORD)
+    if not (valid_username and valid_password):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": f'Basic realm="{ADMIN_REALM}"'},
+        )
+    return credentials.username
+
+
+# ---------------------------------------------------------------------------
 # Cocktails (the public menu + admin-managed source of truth)
 # ---------------------------------------------------------------------------
 
@@ -69,7 +98,11 @@ def get_cocktail(cocktail_id: int, db: Session = Depends(get_db)):
 
 
 @app.post("/api/cocktails", response_model=schemas.CocktailOut, status_code=201)
-def create_cocktail(payload: schemas.CocktailCreate, db: Session = Depends(get_db)):
+def create_cocktail(
+    payload: schemas.CocktailCreate,
+    db: Session = Depends(get_db),
+    _admin: str = Depends(require_admin),
+):
     existing = db.query(models.Cocktail).filter(models.Cocktail.name == payload.name).first()
     if existing:
         raise HTTPException(status_code=409, detail="A cocktail with this name already exists")
@@ -81,7 +114,12 @@ def create_cocktail(payload: schemas.CocktailCreate, db: Session = Depends(get_d
 
 
 @app.put("/api/cocktails/{cocktail_id}", response_model=schemas.CocktailOut)
-def update_cocktail(cocktail_id: int, payload: schemas.CocktailUpdate, db: Session = Depends(get_db)):
+def update_cocktail(
+    cocktail_id: int,
+    payload: schemas.CocktailUpdate,
+    db: Session = Depends(get_db),
+    _admin: str = Depends(require_admin),
+):
     cocktail = db.get(models.Cocktail, cocktail_id)
     if not cocktail:
         raise HTTPException(status_code=404, detail="Cocktail not found")
@@ -100,7 +138,11 @@ def update_cocktail(cocktail_id: int, payload: schemas.CocktailUpdate, db: Sessi
 
 
 @app.delete("/api/cocktails/{cocktail_id}", status_code=204)
-def delete_cocktail(cocktail_id: int, db: Session = Depends(get_db)):
+def delete_cocktail(
+    cocktail_id: int,
+    db: Session = Depends(get_db),
+    _admin: str = Depends(require_admin),
+):
     cocktail = db.get(models.Cocktail, cocktail_id)
     if not cocktail:
         raise HTTPException(status_code=404, detail="Cocktail not found")
@@ -225,5 +267,12 @@ def menu_page():
     return FileResponse(os.path.join(FRONTEND_DIR, "index.html"))
 
 
-# Mounted last so /api/* and /menu.html above take priority.
+# Password-gated: this explicit route intercepts /menu/admin.html before the
+# StaticFiles mount below would otherwise serve it to anyone.
+@app.get("/menu/admin.html", include_in_schema=False)
+def admin_page(_admin: str = Depends(require_admin)):
+    return FileResponse(os.path.join(FRONTEND_DIR, "admin.html"))
+
+
+# Mounted last so /api/*, /menu.html and /menu/admin.html above take priority.
 app.mount("/menu", StaticFiles(directory=FRONTEND_DIR, html=True), name="frontend")
