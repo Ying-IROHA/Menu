@@ -49,3 +49,16 @@ class OrderItem(Base):
     subtotal = Column(Integer, nullable=False, default=0)
 
     order = relationship("Order", back_populates="items")
+
+
+class GuestbookMessage(Base):
+    """A short note left by a friend who visited the menu — displayed on the
+    public guestbook page, newest first."""
+
+    __tablename__ = "guestbook_messages"
+
+    id = Column(Integer, primary_key=True, index=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    name = Column(String, nullable=False, default="")
+    message = Column(String, nullable=False)
+    mark = Column(String, nullable=False, default="✦")
