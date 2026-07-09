@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <base href="/menu/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0c080a" />
+  <meta name="description" content="留下你在 Nocturne 的印记，看看朋友们都写了什么。" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Nocturne" />
+  <meta property="og:title" content="Nocturne · 留言墙" />
+  <meta property="og:description" content="来过的朋友，都留下了点什么。" />
+  <meta property="og:url" content="https://ying-iroha.github.io/Menu/guestbook.html" />
+  <meta property="og:image" content="https://ying-iroha.github.io/Menu/assets/nocturne-og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Nocturne · 留言墙" />
+  <meta name="twitter:description" content="来过的朋友，都留下了点什么。" />
+  <meta name="twitter:image" content="https://ying-iroha.github.io/Menu/assets/nocturne-og.png" />
+  <title>Nocturne · 留言墙</title>
+  <link rel="icon" href="assets/nocturne-icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+  <link rel="stylesheet" href="guestbook.css" />
+</head>
+<body>
+  <header class="gb-header">
+    <div>
+      <span class="eyebrow">Guestbook</span>
+      <h1>留言墙</h1>
+      <p>来过的朋友，都在这里留下了点什么印记。</p>
+    </div>
+    <a href="index.html" class="menu-link">回到酒单 ↗</a>
+  </header>
+
+  <main class="gb-layout">
+    <section class="gb-form-panel">
+      <div class="panel-heading">
+        <div><span>01</span><h2>留下你的印记</h2></div>
+      </div>
+
+      <form id="gb-form" class="gb-form" novalidate>
+        <label class="gb-label" for="gb-name">你的名字（可留空）</label>
+        <input id="gb-name" class="gb-input" type="text" maxlength="40" placeholder="一位深夜来客" autocomplete="off" />
+
+        <span class="gb-label">选一个印记</span>
+        <div id="gb-marks" class="gb-marks"></div>
+
+        <label class="gb-label" for="gb-message">留言</label>
+        <textarea id="gb-message" class="gb-textarea" maxlength="300" rows="4" placeholder="写点什么吧…（最多 300 字）" required></textarea>
+        <div class="gb-count"><span id="gb-count">0</span> / 300</div>
+
+        <button id="gb-submit" class="button-primary gb-submit" type="submit">留下印记</button>
+      </form>
+    </section>
+
+    <section class="gb-wall-panel">
+      <div class="panel-heading">
+        <div><span>02</span><h2>朋友们的印记</h2></div>
+        <strong id="gb-summary">正在加载…</strong>
+      </div>
+      <div id="gb-wall" class="gb-wall"></div>
+      <div id="gb-empty" class="gb-empty">
+        <span>✎</span>
+        <p>还没有人留言，第一个印记会是你的。</p>
+      </div>
+    </section>
+  </main>
+
+  <div id="gb-toast" class="gb-toast" role="status" aria-live="polite"></div>
+  <script src="guestbook.js"></script>
+</body>
+</html>
