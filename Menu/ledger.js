@@ -180,7 +180,8 @@ function renderBill() {
 
 function formatDate(timestamp) {
   return new Intl.DateTimeFormat("zh-CN", {
-    year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit"
+    year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit",
+    timeZone: "Asia/Shanghai"
   }).format(new Date(timestamp));
 }
 
