@@ -248,6 +248,55 @@ def delete_order(order_id: int, db: Session = Depends(get_db)):
     return None
 
 
+# ---------------------------------------------------------------------------
+# Guestbook — friends visiting the menu can leave a short public note.
+# Reading and posting are open to everyone (that's the point); deleting a
+# message is an admin-only moderation action.
+# ---------------------------------------------------------------------------
+
+@app.get("/api/guestbook", response_model=List[schemas.GuestbookMessageOut])
+def list_guestbook_messages(limit: int = 200, db: Session = Depends(get_db)):
+    limit = max(1, min(limit, 500))
+    return (
+        db.query(models.GuestbookMessage)
+        .order_by(models.GuestbookMessage.created_at.desc(), models.GuestbookMessage.id.desc())
+        .limit(limit)
+        .all()
+    )
+
+
+@app.post("/api/guestbook", response_model=schemas.GuestbookMessageOut, status_code=201)
+def create_guestbook_message(payload: schemas.GuestbookMessageCreate, db: Session = Depends(get_db)):
+    message = payload.message.strip()
+    if not message:
+        raise HTTPException(status_code=400, detail="Message cannot be empty")
+    mark = payload.mark if payload.mark in schemas.GUESTBOOK_MARKS else schemas.GUESTBOOK_MARKS[0]
+
+    entry = models.GuestbookMessage(
+        name=payload.name.strip()[:40],
+        message=message,
+        mark=mark,
+    )
+    db.add(entry)
+    db.commit()
+    db.refresh(entry)
+    return entry
+
+
+@app.delete("/api/guestbook/{message_id}", status_code=204)
+def delete_guestbook_message(
+    message_id: int,
+    db: Session = Depends(get_db),
+    _admin: str = Depends(require_admin),
+):
+    entry = db.get(models.GuestbookMessage, message_id)
+    if not entry:
+        raise HTTPException(status_code=404, detail="Message not found")
+    db.delete(entry)
+    db.commit()
+    return None
+
+
 @app.get("/api/health")
 def health():
     return {"status": "ok"}
