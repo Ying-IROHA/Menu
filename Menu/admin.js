@@ -28,6 +28,11 @@ const emptyNode = document.getElementById("cocktail-empty");
 const countNode = document.getElementById("cocktail-count");
 const toast = document.getElementById("admin-toast");
 
+let guestbookMessages = [];
+const guestbookTableNode = document.getElementById("guestbook-table");
+const guestbookEmptyNode = document.getElementById("guestbook-empty");
+const guestbookCountNode = document.getElementById("guestbook-count");
+
 const baseLabels = {
   Gin: "金酒", Vodka: "伏特加", Whiskey: "威士忌", Rum: "朗姆", Tequila: "龙舌兰",
   Brandy: "白兰地", Cognac: "干邑", Campari: "Campari", Mezcal: "梅斯卡尔",
@@ -205,9 +210,65 @@ tableNode.addEventListener("click", async event => {
   }
 });
 
+function formatDate(timestamp) {
+  return new Intl.DateTimeFormat("zh-CN", {
+    year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit",
+    timeZone: "Asia/Shanghai"
+  }).format(new Date(timestamp));
+}
+
+async function loadGuestbookMessages() {
+  const response = await fetch("/api/guestbook?limit=500");
+  if (!response.ok) throw new Error(`加载留言失败：${response.status}`);
+  guestbookMessages = await response.json();
+}
+
+function renderGuestbookTable() {
+  guestbookTableNode.innerHTML = guestbookMessages.map(entry => `
+    <article class="guestbook-row" data-id="${entry.id}">
+      <div class="guestbook-row-main">
+        <div class="gb-row-top">
+          <span class="gb-mark" aria-hidden="true">${entry.mark}</span>
+          <span>${entry.name ? escapeHTML(entry.name) : "一位深夜来客"}</span>
+          <span>·</span>
+          <span>${formatDate(entry.created_at)}</span>
+        </div>
+        <p class="gb-row-message">${escapeHTML(entry.message)}</p>
+      </div>
+      <div class="guestbook-row-actions">
+        <button type="button" class="guestbook-delete-btn" data-id="${entry.id}">删除</button>
+      </div>
+    </article>
+  `).join("");
+
+  guestbookTableNode.style.display = guestbookMessages.length ? "grid" : "none";
+  guestbookEmptyNode.hidden = guestbookMessages.length !== 0;
+  guestbookCountNode.textContent = `共 ${guestbookMessages.length} 条`;
+}
+
+guestbookTableNode.addEventListener("click", async event => {
+  const deleteBtn = event.target.closest(".guestbook-delete-btn");
+  if (!deleteBtn) return;
+
+  const entry = guestbookMessages.find(m => m.id === Number(deleteBtn.dataset.id));
+  if (!entry) return;
+  if (!window.confirm("确定删除这条留言吗？此操作无法撤销。")) return;
+
+  try {
+    const response = await fetch(`/api/guestbook/${entry.id}`, { method: "DELETE" });
+    if (!response.ok && response.status !== 204) throw new Error(`删除失败：${response.status}`);
+    guestbookMessages = guestbookMessages.filter(m => m.id !== entry.id);
+    renderGuestbookTable();
+    showToast("留言已删除");
+  } catch (error) {
+    showToast(error.message || "删除失败");
+  }
+});
+
 async function init() {
   resetForm();
   tableNode.innerHTML = `<p style="opacity:.6;padding:12px 4px">正在加载…</p>`;
+  guestbookTableNode.innerHTML = `<p style="opacity:.6;padding:12px 4px">正在加载…</p>`;
   try {
     await loadCocktails();
     renderTable();
@@ -215,6 +276,15 @@ async function init() {
     console.error(error);
     tableNode.innerHTML = `<p style="opacity:.6;padding:12px 4px">加载失败，请确认后端服务已启动，然后刷新页面。</p>`;
     countNode.textContent = "加载失败";
+  }
+
+  try {
+    await loadGuestbookMessages();
+    renderGuestbookTable();
+  } catch (error) {
+    console.error(error);
+    guestbookTableNode.innerHTML = `<p style="opacity:.6;padding:12px 4px">加载失败，请确认后端服务已启动，然后刷新页面。</p>`;
+    guestbookCountNode.textContent = "加载失败";
   }
 }
 

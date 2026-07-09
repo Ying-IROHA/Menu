@@ -21,10 +21,12 @@
     <div class="admin-header-links">
       <a href="index.html" class="menu-link">查看客用酒单 ↗</a>
       <a href="ledger.html" class="menu-link">打开私人点单台 ↗</a>
+      <a href="guestbook.html" class="menu-link">查看留言墙 ↗</a>
     </div>
   </header>
 
-  <main class="admin-workspace">
+  <main class="admin-main">
+   <div class="admin-workspace">
     <section class="admin-form-panel">
       <div class="panel-heading">
         <div><span id="form-mode-index">01</span><h2 id="form-title">新增酒款</h2></div>
@@ -106,6 +108,17 @@
       <div id="cocktail-table" class="cocktail-table"></div>
       <div id="cocktail-empty" class="empty-state" hidden>没有找到对应酒款</div>
     </section>
+   </div>
+
+   <section class="admin-guestbook-panel">
+    <div class="panel-heading">
+      <div><span>03</span><h2>留言管理</h2></div>
+      <strong id="guestbook-count">加载中…</strong>
+    </div>
+    <p class="panel-hint">谁都能在留言墙留言，这里只用来删掉不合适的内容，其他留言不用管。</p>
+    <div id="guestbook-table" class="guestbook-table"></div>
+    <div id="guestbook-empty" class="empty-state" hidden>还没有人留言</div>
+   </section>
   </main>
 
   <div id="admin-toast" class="ledger-toast" role="status" aria-live="polite"></div>
