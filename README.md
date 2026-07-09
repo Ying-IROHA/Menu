@@ -70,6 +70,9 @@ BarMenu/
     ├── admin.html          # 酒单管理后台
     ├── admin.css           # 管理后台视觉
     ├── admin.js            # 增删改酒款逻辑
+    ├── guestbook.html      # 留言墙
+    ├── guestbook.css       # 留言墙视觉
+    ├── guestbook.js        # 留言的读取与提交逻辑（数据来自后端）
     └── assets/
         └── nocturne-menu-qr.png
 ```
@@ -118,6 +121,11 @@ uvicorn main:app --reload
 | GET | `/api/orders?limit=100` | 结账历史 |
 | POST | `/api/orders` | 新建一条结账记录 |
 | DELETE | `/api/orders/{id}` | 删除一条历史记录 |
+| GET | `/api/guestbook?limit=200` | 全部留言（按时间倒序） |
+| POST | `/api/guestbook` | 新增一条留言（任何人都能写） |
+| DELETE | `/api/guestbook/{id}` | 删除一条留言（需要管理员账号密码） |
+
+留言墙是 [`Menu/guestbook.html`](./Menu/guestbook.html)，从酒单右上角的「留言」按钮进入，谁都能读、能写，删除留言走管理员密码保护（见下一节），暂时没有做在页面里。
 
 ## 关于管理后台的安全性
 
