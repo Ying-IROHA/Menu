@@ -271,6 +271,10 @@ main { max-width: 1240px; margin: auto; padding: 76px 24px 110px; }
 footer { max-width: 1240px; margin: auto; padding: 0 24px 42px; display: flex; align-items: center; gap: 18px; color: var(--dim); font-size: 9px; letter-spacing: .18em; text-transform: uppercase; }
 footer i { height: 1px; flex: 1; background: var(--hairline); }
 
+.beian { max-width: 1240px; margin: 0 auto; padding: 0 24px 32px; text-align: center; }
+.beian a { color: var(--dim); font-family: var(--cn-serif); font-size: 10px; letter-spacing: .06em; text-decoration: none; }
+.beian a:hover { color: var(--gold); }
+
 @keyframes turn { to { transform: rotate(360deg); } }
 @keyframes arrive { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 

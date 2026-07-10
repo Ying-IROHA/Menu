@@ -297,7 +297,7 @@ def delete_guestbook_message(
     return None
 
 
-@app.get("/api/health")
+@app.api_route("/api/health", methods=["GET", "HEAD"])
 def health():
     return {"status": "ok"}
 
@@ -311,14 +311,14 @@ def health():
 # ---------------------------------------------------------------------------
 
 
-@app.get("/menu.html", include_in_schema=False)
+@app.api_route("/menu.html", methods=["GET", "HEAD"], include_in_schema=False)
 def menu_page():
     return FileResponse(os.path.join(FRONTEND_DIR, "index.html"))
 
 
 # Password-gated: this explicit route intercepts /menu/admin.html before the
 # StaticFiles mount below would otherwise serve it to anyone.
-@app.get("/menu/admin.html", include_in_schema=False)
+@app.api_route("/menu/admin.html", methods=["GET", "HEAD"], include_in_schema=False)
 def admin_page(_admin: str = Depends(require_admin)):
     return FileResponse(os.path.join(FRONTEND_DIR, "admin.html"))
 

@@ -107,6 +107,10 @@ button, input { font: inherit; }
 .ledger-toast { position: fixed; left: 50%; bottom: 26px; padding: 10px 17px; border: 1px solid var(--gold); color: var(--night); background: var(--gold); font-family: var(--cn); font-size: 10px; opacity: 0; pointer-events: none; transform: translate(-50%,15px); transition: .22s ease; }
 .ledger-toast.show { opacity: 1; transform: translate(-50%,0); }
 
+.beian { max-width: 1440px; margin: 0 auto; padding: 0 32px 28px; text-align: center; }
+.beian a { color: var(--dim); font-family: var(--cn); font-size: 10px; letter-spacing: .06em; text-decoration: none; }
+.beian a:hover { color: var(--gold); }
+
 @media (max-width: 1050px) { .ledger-catalog { grid-template-columns: repeat(2,minmax(0,1fr)); } .ledger-history { grid-template-columns: repeat(2,minmax(0,1fr)); } }
 @media (max-width: 780px) {
   .ledger-header { padding: 30px 18px 22px; align-items: start; }

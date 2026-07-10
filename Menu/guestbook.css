@@ -65,6 +65,10 @@ button, input, textarea { font: inherit; }
 .gb-toast { position: fixed; left: 50%; bottom: 26px; padding: 10px 17px; border: 1px solid var(--gold); color: var(--night); background: var(--gold); font-family: var(--cn); font-size: 10px; opacity: 0; pointer-events: none; transform: translate(-50%,15px); transition: .22s ease; z-index: 30; }
 .gb-toast.show { opacity: 1; transform: translate(-50%,0); }
 
+.beian { max-width: 1200px; margin: 0 auto; padding: 0 32px 32px; text-align: center; }
+.beian a { color: var(--dim); font-family: var(--cn); font-size: 10px; letter-spacing: .06em; text-decoration: none; }
+.beian a:hover { color: var(--gold); }
+
 @media (max-width: 900px) {
   .gb-layout { grid-template-columns: 1fr; }
   .gb-form-panel { position: static; }

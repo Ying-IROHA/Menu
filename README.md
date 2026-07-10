@@ -2,94 +2,88 @@
 
 <p><sub>AFTER MIDNIGHT · COCKTAIL ARCHIVE</sub></p>
 
-# 𝑵𝒐𝒄𝒕𝒖𝒓𝒏𝒆
+# Nocturne 鸡尾酒酒单
 
 ### 一份写给夜晚，并持续生长的调酒索引
 
 <p>
-  <a href="https://ying-iroha.github.io/Menu/Menu/"><img alt="进入在线酒单" src="./assets/readme-live-menu.svg" height="46"></a>
+  <a href="https://ying-iroha.online/menu/index.html"><img alt="进入在线酒单" src="./assets/readme-live-menu.svg" height="46"></a>
   &nbsp;
-  <a href="https://ying-iroha.github.io/Menu/Menu/ledger.html"><img alt="打开私人点单台" src="./assets/readme-private-ledger.svg" height="46"></a>
+  <a href="https://ying-iroha.online/menu/ledger.html"><img alt="打开私人点单台" src="./assets/readme-private-ledger.svg" height="46"></a>
 </p>
 
-<p><sub>VANILLA JS FRONTEND &nbsp;·&nbsp; FASTAPI + SQLITE BACKEND</sub></p>
+<p><sub>VANILLA JS FRONTEND · FASTAPI + SQLITE BACKEND</sub></p>
 
 </div>
 
 ---
 
-## About the night
+## About
 
-Nocturne 是一份鸡尾酒酒单，也是一册属于深夜的私人饮用记录。前端仍然是没有构建步骤的原生 JavaScript，酒单数据、点单台账单和结账历史现在都保存在后端的数据库里 —— 运行和部署方式见本 README。
+Nocturne 是一份鸡尾酒酒单，也是一套给吧台使用的轻量记录工具。客人看到的是可搜索、可筛选、可展开配方的经典鸡尾酒档案；调酒师可以通过独立点单台记录酒款、数量、折扣、备注和结账历史；管理员可以在后台维护酒单和留言。
 
-客人看到的是安静、可搜索的经典鸡尾酒档案；调酒师使用独立点单台记录酒款、数量、折扣、实收金额与每一次饮用。设计以黑莓酒红、旧金、纸张颗粒和装饰艺术线条为核心，希望它更像一本酒吧里的旧册页，而不只是一张网页。
+项目没有前端构建步骤。页面是原生 HTML/CSS/JavaScript，数据由 `backend/` 中的 FastAPI 服务提供，并保存在本地 SQLite 数据库里。
 
-## Two surfaces
+## Surfaces
 
-| 客用酒单 | 私人点单台 |
-| :--- | :--- |
-| 中英文酒名与风味描述 | 快速搜索并加入当前账单 |
-| 经典鸡尾酒 / 特调双层索引 | 数量增减与实时合计 |
-| 六大基酒与「其他」筛选 | 原价至 5 折的心情折扣 |
-| 点击展开配方 | 临时特调固定价记录 |
-| 响应式手机排版 | 结账归档与饮用历史 |
+| 页面 | 路径 | 用途 |
+| :--- | :--- | :--- |
+| 客用酒单 | `/menu.html` 或 `/menu/` | 浏览经典与特调酒款、搜索基酒/风味/配方、展开查看配方 |
+| 私人点单台 | `/menu/ledger.html` | 快速加入酒款、调整数量、选择折扣、结账并保存历史 |
+| 留言墙 | `/menu/guestbook.html` | 访客公开留言，后台可删除 |
+| 管理后台 | `/menu/admin.html` | 新增、编辑、删除酒款，并管理留言 |
+| API 文档 | `/docs` | FastAPI 自动生成的接口文档 |
 
-> 私人点单台的账单和历史现在保存在后端数据库里，换设备、换浏览器都能看到同一份记录；正在编辑、还没结账的账单仍缓存在浏览器 `localStorage` 中，只是为了防止刷新页面时丢失。
+## Features
 
-## The menu
+- 客用酒单支持经典酒款和特调两层分类，并按基酒继续筛选。
+- 搜索会匹配英文名、中文名、基酒、风味描述、价格和配方材料。
+- 点单台从后端读取同一份酒单，支持临时特调、数量增减、备注、折扣和结账历史。
+- 管理后台可以维护酒款名称、中文名、基酒、分类、价格、风味、配方和点单台置顶顺序。
+- 留言墙支持公开读取和提交，删除留言需要管理员认证。
+- 首次启动会自动创建 `backend/bar_menu.db` 并写入初始酒单数据。
 
-当前酒单收录经典配方，并为继续加入特调预留了独立分类。搜索会同时匹配英文名、中文名、基酒、风味、价格和配方材料。
+> 正在编辑、尚未结账的点单会暂存在浏览器 `localStorage`，用于防止刷新页面时丢失当前账单；已经结账的记录会写入后端数据库。
 
-价格以人民币显示，主力区间控制在 ¥100 以下；用料或工序更特殊的酒款保留更高档位。私人点单台另设 ¥128 的「临时特调」，用于记录酒单外点单。
-
-## Local ledger
-
-访问 [`Menu/ledger.html`](./Menu/ledger.html) 可打开独立点单界面。它不会在客用酒单中出现入口，适合由调酒师根据客人口述自行记录。
-
-每次结账会保存：
-
-- 日期与时间
-- 酒款及数量
-- 本次备注
-- 原价、折扣与实收金额
-
-数据保存在服务器的 SQLite 数据库里，是「个人使用界面」，目前没有登录验证（管理后台 `admin.html` 有，见下面「关于管理后台的安全性」这一节，点单台本身暂时没有）。
-
-## Project anatomy
+## Project Anatomy
 
 ```text
 BarMenu/
-├── backend/             # FastAPI + SQLite 后端
-└── Menu/
-    ├── index.html          # 客用酒单，从 /api/cocktails 读取数据
-    ├── style.css           # 客用酒单视觉
-    ├── script.js           # 筛选、搜索、渲染逻辑（数据来自后端）
-    ├── ledger.html         # 私人点单台
-    ├── ledger.css          # 点单台视觉
-    ├── ledger.js           # 点单、折扣、结账（数据来自后端）
-    ├── admin.html          # 酒单管理后台
-    ├── admin.css           # 管理后台视觉
-    ├── admin.js            # 增删改酒款逻辑
-    ├── guestbook.html      # 留言墙
-    ├── guestbook.css       # 留言墙视觉
-    ├── guestbook.js        # 留言的读取与提交逻辑（数据来自后端）
-    └── assets/
-        └── nocturne-menu-qr.png
+├─ index.html                 # 静态环境下跳转到 Menu/
+├─ README.md
+├─ assets/                    # README 按钮、二维码等展示资源
+├─ backend/
+│  ├─ main.py                 # FastAPI 路由、鉴权、静态文件托管
+│  ├─ models.py               # SQLAlchemy 数据模型
+│  ├─ schemas.py              # Pydantic 请求/响应模型
+│  ├─ database.py             # SQLite 连接与 session
+│  ├─ seed_data.py            # 首次启动写入的初始酒单
+│  ├─ requirements.txt
+│  └─ Dockerfile
+└─ Menu/
+   ├─ index.html              # 客用酒单
+   ├─ script.js
+   ├─ style.css
+   ├─ ledger.html             # 私人点单台
+   ├─ ledger.js
+   ├─ ledger.css
+   ├─ guestbook.html          # 留言墙
+   ├─ guestbook.js
+   ├─ guestbook.css
+   ├─ admin.html              # 管理后台
+   ├─ admin.js
+   ├─ admin.css
+   └─ assets/
 ```
 
-前端本身仍然不需要构建步骤，但现在依赖 `backend/` 提供的 API 才能正常工作——直接双击打开 `Menu/index.html` 不会显示任何酒款，需要先启动后端服务（见下方「本地运行」）。
+## Local Run
 
-## 本地运行
+需要 Python 3.10 或以上版本。
 
-需要 Python 3.10 及以上版本。
-
-```bash
-cd BarMenu/backend
+```powershell
+cd "C:\Users\ALIENWARE\Desktop\Programs\BarMenu\backend"
 python -m venv .venv
-
-# Windows
-.venv\Scripts\activate
-
+.\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 uvicorn main:app --reload
 ```
@@ -98,63 +92,100 @@ uvicorn main:app --reload
 
 - 客用酒单：http://127.0.0.1:8000/menu.html
 - 私人点单台：http://127.0.0.1:8000/menu/ledger.html
+- 留言墙：http://127.0.0.1:8000/menu/guestbook.html
 - 管理后台：http://127.0.0.1:8000/menu/admin.html
 - API 文档：http://127.0.0.1:8000/docs
 
-第一次启动会自动创建 `backend/bar_menu.db`，并写入初始酒单数据。这个数据库文件是本地运行数据，已被 `.gitignore` 忽略，不会提交到 GitHub。
+第一次运行时会自动生成 `backend/bar_menu.db`。这个文件是本地运行数据源，已经被 `.gitignore` 忽略；如果要迁移或备份酒单、点单历史和留言，备份这个数据库文件即可。
 
-## Updating the collection
+## LAN Use
 
-酒款、配方、价格、风味描述现在都通过 [`Menu/admin.html`](./Menu/admin.html) 管理后台增删改，保存后客用酒单和点单台会在下次加载时自动读到最新数据，不需要再手改 `script.js` 或 `ledger.js`。
+如果希望同一 Wi-Fi 下的手机或平板访问点单台，可以把服务监听到局域网：
 
-如果更喜欢直接改数据库，也可以调用后端 API（见下方「API 一览」）。一款酒对应的字段是：英文名（唯一标识）、中文名、基酒、酒单分类（经典/特调）、价格、风味描述、配方（每行一种材料），以及可选的「点单台置顶顺序」。
-
-## API 一览
-
-| 方法 | 路径 | 用途 |
-| :--- | :--- | :--- |
-| GET | `/api/cocktails` | 全部酒款 |
-| POST | `/api/cocktails` | 新增酒款 |
-| PUT | `/api/cocktails/{id}` | 编辑酒款 |
-| DELETE | `/api/cocktails/{id}` | 删除酒款 |
-| GET | `/api/ledger/catalog` | 点单台快速点单目录 |
-| GET | `/api/orders?limit=100` | 结账历史 |
-| POST | `/api/orders` | 新建一条结账记录 |
-| DELETE | `/api/orders/{id}` | 删除一条历史记录 |
-| GET | `/api/guestbook?limit=200` | 全部留言（按时间倒序） |
-| POST | `/api/guestbook` | 新增一条留言（任何人都能写） |
-| DELETE | `/api/guestbook/{id}` | 删除一条留言（需要管理员账号密码） |
-
-留言墙是 [`Menu/guestbook.html`](./Menu/guestbook.html)，从酒单右上角的「留言」按钮进入，谁都能读、能写，删除留言走管理员密码保护（见下一节），暂时没有做在页面里。
-
-## 关于管理后台的安全性
-
-`/menu/admin.html` 和所有会改数据的接口（新增/编辑/删除酒款）现在有用户名+密码保护（HTTP Basic Auth）。浏览器第一次打开管理后台会弹出系统自带的登录框，输一次之后同一个浏览器会记住。客用酒单、点单台和结账接口不受影响，照常任何人都能访问。
-
-默认账号密码是 `admin` / `nocturne`，**只是占位，务必自己改掉**，通过环境变量设置：
-
-```bash
-export ADMIN_USERNAME="你自己的用户名"
-export ADMIN_PASSWORD="一个够长的密码"
+```powershell
+uvicorn main:app --host 0.0.0.0 --port 8000
 ```
 
-用 `systemd` 常驻运行的话，在 service 的 drop-in 配置里加：
+然后在其他设备浏览器中访问：
+
+```text
+http://<这台电脑的局域网 IP>:8000/menu/ledger.html
+```
+
+## Admin Security
+
+`/menu/admin.html` 和酒单写操作接口已经使用 HTTP Basic Auth 保护。默认账号密码是：
+
+```text
+admin / nocturne
+```
+
+这只适合本地测试。部署到公网前务必通过环境变量改掉：
+
+```powershell
+$env:ADMIN_USERNAME="your-admin-name"
+$env:ADMIN_PASSWORD="a-long-private-password"
+uvicorn main:app --host 0.0.0.0 --port 8000
+```
+
+Linux 或 systemd 环境可以设置同名环境变量：
 
 ```ini
 [Service]
-Environment=ADMIN_USERNAME=你自己的用户名
-Environment=ADMIN_PASSWORD=一个够长的密码
+Environment=ADMIN_USERNAME=your-admin-name
+Environment=ADMIN_PASSWORD=a-long-private-password
 ```
 
-没设置这两个环境变量时会用默认值兜底，方便本地测试，但**不要就这么部署到公网上**——尤其这份代码是公开仓库，默认密码谁都看得到。这只是最基础的一层保护，生产环境建议一定要配 HTTPS，不然密码会在 HTTP 明文中被截获。
+生产环境还应放在 HTTPS 后面，否则 Basic Auth 密码会在 HTTP 明文传输中暴露。
 
-## Scan the archive
+## API Overview
+
+| 方法 | 路径 | 用途 |
+| :--- | :--- | :--- |
+| `GET` | `/api/health` | 健康检查 |
+| `GET` | `/api/cocktails` | 获取全部酒款 |
+| `GET` | `/api/cocktails/{id}` | 获取单个酒款 |
+| `POST` | `/api/cocktails` | 新增酒款，需要管理员认证 |
+| `PUT` | `/api/cocktails/{id}` | 编辑酒款，需要管理员认证 |
+| `DELETE` | `/api/cocktails/{id}` | 删除酒款，需要管理员认证 |
+| `GET` | `/api/ledger/catalog` | 点单台目录，包含临时特调 |
+| `GET` | `/api/orders?limit=100` | 结账历史 |
+| `POST` | `/api/orders` | 新建结账记录 |
+| `DELETE` | `/api/orders/{id}` | 删除结账记录 |
+| `GET` | `/api/guestbook?limit=200` | 留言列表 |
+| `POST` | `/api/guestbook` | 新增留言 |
+| `DELETE` | `/api/guestbook/{id}` | 删除留言，需要管理员认证 |
+
+完整交互式文档见运行后的 `/docs`。
+
+## Updating the Menu
+
+推荐通过管理后台维护酒单：
+
+```text
+http://127.0.0.1:8000/menu/admin.html
+```
+
+保存后，客用酒单和私人点单台会在下次加载时自动读取最新数据，不需要手动修改 `Menu/script.js` 或 `Menu/ledger.js`。
+
+## Deployment Notes
+
+这个项目现在依赖 FastAPI 后端，单纯的 GitHub Pages 只能托管静态文件，不能运行 SQLite 和 API。要让完整功能在线可用，需要部署到能运行 Python 服务的平台，例如云服务器、Render、Railway、Fly.io，或使用 Docker：
+
+```powershell
+docker build -f backend/Dockerfile -t nocturne-bar .
+docker run -d --name nocturne -p 8000:8000 -v nocturne-data:/app/backend nocturne-bar
+```
+
+`-v nocturne-data:/app/backend` 会把数据库所在目录挂载为持久卷，容器重建后数据不会丢失。
+
+## Scan
 
 <div align="center">
   <a href="https://ying-iroha.github.io/Menu/Menu/">
     <img src="./assets/nocturne-menu-qr.png" width="360" alt="Nocturne 鸡尾酒酒单二维码" />
   </a>
-  <p><sub>扫码进入 Nocturne Cocktail Archive</sub></p>
+  <p><sub>Scan to open Nocturne Cocktail Archive</sub></p>
 </div>
 
 ---
